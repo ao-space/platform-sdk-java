@@ -7,13 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class RegisterUserRequestTest {
@@ -28,22 +28,25 @@ public class RegisterUserRequestTest {
 
     @Test
     public void testRegisterUserRequest() throws Exception {
+        String boxUuid = "123456789";
+
         RegisterUserRequest request = new RegisterUserRequest();
-        request.setBoxUUID("123456789");
         request.setUserId("user1");
         request.setUserType("user_admin");
         request.setClientUUID("c1");
 
+        HttpEntity<RegisterUserRequest> entity = new HttpEntity<>(request);
+
         RegisterUserResponse expectedResponse = new RegisterUserResponse();
-        expectedResponse.setBoxUUID("123456789");
+        expectedResponse.setBoxUUID(boxUuid);
         expectedResponse.setUserId("user1");
         expectedResponse.setUserType("user_admin");
         expectedResponse.setClientUUID("c1");
 
-        when(mockClient.sendRequest(anyString(), any(HttpMethod.class), any(RequestCallback.class),
-                any(ResponseExtractor.class))).thenReturn(expectedResponse);
+        when(mockClient.sendRequest(eq("/v2/platform/boxes/" + boxUuid + "/users"), eq(HttpMethod.POST), any(), any()))
+                .thenReturn(expectedResponse);
 
-        RegisterUserResponse actualResponse = mockClient.sendRequest("/v2/platform/boxes/{box_uuid}/users", HttpMethod.POST, null, null);
+        RegisterUserResponse actualResponse = mockClient.sendRequest("/v2/platform/boxes/" + boxUuid + "/users", HttpMethod.POST, entity, null);
 
         assertEquals(expectedResponse.getBoxUUID(), actualResponse.getBoxUUID());
         assertEquals(expectedResponse.getUserId(), actualResponse.getUserId());
