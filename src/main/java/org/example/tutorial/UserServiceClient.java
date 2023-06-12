@@ -38,8 +38,8 @@ public class UserServiceClient {
                         .uri(URI.create(host + "/v2/platform/boxes/" + boxUUID + "/users"))
                         .header("Content-Type", "application/json")
                         .header("Api-Key", apiKey)
-                        .header("Request-Id", reqId) // Add this line
-                        .header("Box-Reg-Key", boxRegKey) // Add this line
+                        .header("Request-Id", reqId)
+                        .header("Box-Reg-Key", boxRegKey)
                         .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                         .build(),
                 HttpResponse.BodyHandlers.ofString());
