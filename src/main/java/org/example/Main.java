@@ -22,6 +22,7 @@ public class Main {
 
             // Call the registerUser method and get the response
             String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
+            // todo: get the valid token first before execute following code
             String boxRegKey = "brk_YVj29IJAD3";
             RegisterUserResponse response = userServiceClient.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
 
