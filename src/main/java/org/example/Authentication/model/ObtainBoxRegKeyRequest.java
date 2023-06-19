@@ -1,4 +1,4 @@
-package org.example.register.model;
+package org.example.Authentication.model;
 
 import com.aliyuncs.RpcAcsRequest;
 import com.aliyuncs.http.MethodType;

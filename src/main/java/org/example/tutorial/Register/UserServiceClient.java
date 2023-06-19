@@ -1,4 +1,4 @@
-package org.example.tutorial;
+package org.example.tutorial.Register;
 
 import com.aliyuncs.transform.UnmarshallerContext;
 import com.fasterxml.jackson.databind.ObjectMapper;

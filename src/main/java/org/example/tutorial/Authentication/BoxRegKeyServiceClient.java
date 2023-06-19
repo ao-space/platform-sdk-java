@@ -1,8 +1,8 @@
-package org.example.tutorial;
+package org.example.tutorial.Authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.register.model.ObtainBoxRegKeyRequest;
-import org.example.register.model.ObtainBoxRegKeyResponse;
+import org.example.Authentication.model.ObtainBoxRegKeyRequest;
+import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 
 import java.net.URI;
 import java.net.http.HttpClient;

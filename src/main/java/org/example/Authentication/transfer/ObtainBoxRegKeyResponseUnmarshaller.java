@@ -1,7 +1,7 @@
-package org.example.register.transfer;
+package org.example.Authentication.transfer;
 
 import com.aliyuncs.transform.UnmarshallerContext;
-import org.example.register.model.ObtainBoxRegKeyResponse;
+import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

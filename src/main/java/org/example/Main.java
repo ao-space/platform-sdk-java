@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.register.model.RegisterUserResponse;
-import org.example.tutorial.UserServiceClient;
+import org.example.tutorial.Register.UserServiceClient;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,8 +1,8 @@
 package Authentication;
 
-import org.example.register.model.ObtainBoxRegKeyRequest;
-import org.example.register.model.ObtainBoxRegKeyResponse;
-import org.example.tutorial.BoxRegKeyServiceClient;
+import org.example.Authentication.model.ObtainBoxRegKeyRequest;
+import org.example.Authentication.model.ObtainBoxRegKeyResponse;
+import org.example.tutorial.Authentication.BoxRegKeyServiceClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
