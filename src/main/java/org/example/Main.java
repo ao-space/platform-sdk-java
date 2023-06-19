@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.register.model.RegisterUserResponse;
-import org.example.tutorial.Register.UserServiceClient;
+import org.example.tutorial.Register.RegisterUserServiceClient;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,7 +10,7 @@ public class Main {
         String apiKey = "api-key";
 
         // Create an instance of UserServiceClient
-        UserServiceClient userServiceClient = new UserServiceClient(host, apiKey);
+        RegisterUserServiceClient registerUserServiceClient = new RegisterUserServiceClient(host, apiKey);
 
         try {
             // Define your request parameters
@@ -24,7 +24,7 @@ public class Main {
             String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
             // todo: get the valid token first before execute following code
             String boxRegKey = "brk_YVj29IJAD3";
-            RegisterUserResponse response = userServiceClient.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
+            RegisterUserResponse response = registerUserServiceClient.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
 
             // use the response object
             System.out.println("Box UUID: " + response.getBoxUUID());

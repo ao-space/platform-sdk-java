@@ -11,12 +11,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class UserServiceClient {
+public class RegisterUserServiceClient {
 
     private String host;
     private String apiKey;
 
-    public UserServiceClient(String host, String apiKey) {
+    public RegisterUserServiceClient(String host, String apiKey) {
         this.host = host;
         this.apiKey = apiKey;
     }
