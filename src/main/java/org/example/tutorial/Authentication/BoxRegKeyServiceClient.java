@@ -1,6 +1,7 @@
 package org.example.tutorial.Authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 
@@ -8,6 +9,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+
 
 public class BoxRegKeyServiceClient {
 
@@ -19,14 +22,14 @@ public class BoxRegKeyServiceClient {
         this.apiKey = apiKey;
     }
 
-    public ObtainBoxRegKeyResponse obtainBoxRegKey(String boxUUID, String serviceIds, String sign, String reqId) throws Exception {
+    public ObtainBoxRegKeyResponse obtainBoxRegKey(String boxUUID, List<String> serviceIds, String sign, String reqId) throws Exception {
         ObtainBoxRegKeyRequest request = new ObtainBoxRegKeyRequest();
         request.setBoxUUID(boxUUID);
         request.setServiceIds(serviceIds);
         request.setSign(sign);
 
         // Convert the request object to a JSON string
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         String requestBody = objectMapper.writeValueAsString(request);
 
         HttpResponse<String> httpResponse = HttpClient.newHttpClient().send(

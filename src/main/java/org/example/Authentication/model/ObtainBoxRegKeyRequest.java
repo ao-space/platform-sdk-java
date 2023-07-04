@@ -3,13 +3,15 @@ package org.example.Authentication.model;
 import com.aliyuncs.RpcAcsRequest;
 import com.aliyuncs.http.MethodType;
 
+import java.util.List;
+
 public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyResponse> {
 
     // Field for Box UUID
     private String boxUUID;
 
     // Field for Service IDs
-    private String serviceIds;
+    private List<String> serviceIds;
 
     // Field for Sign
     private String sign;
@@ -34,12 +36,12 @@ public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyRespons
         putBodyParameter("boxUUID", boxUUID);
     }
 
-    public String getServiceIds() {
+    public List<String> getServiceIds() {
         return this.serviceIds;
     }
 
-    public void setServiceIds(String serviceIds) {
-        if (serviceIds == null || serviceIds.trim().isEmpty()) {
+    public void setServiceIds(List<String> serviceIds) {
+        if (serviceIds == null || serviceIds.isEmpty()) {
             throw new IllegalArgumentException("Service IDs cannot be null or empty.");
         }
         this.serviceIds = serviceIds;

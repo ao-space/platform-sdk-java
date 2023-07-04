@@ -9,7 +9,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +31,7 @@ public class ObtainBoxRegKeyRequestTest {
     @Test
     public void testObtainBoxRegKeyRequest() throws Exception {
         String boxUuid = "123456789";
-        String serviceIds = "10001";
+        List<String> serviceIds = Arrays.asList("service-id1", "service-id2");
         String sign = "signature";
 
         ObtainBoxRegKeyRequest request = new ObtainBoxRegKeyRequest();
@@ -38,7 +40,7 @@ public class ObtainBoxRegKeyRequestTest {
         request.setSign(sign);
 
         ObtainBoxRegKeyResponse.TokenResult tokenResult = new ObtainBoxRegKeyResponse.TokenResult();
-        tokenResult.setServiceId(serviceIds);
+        tokenResult.setServiceId(serviceIds.get(0));
         tokenResult.setBoxRegKey("box_reg_key");
         tokenResult.setExpiresAt(OffsetDateTime.now().plusHours(1));
 
