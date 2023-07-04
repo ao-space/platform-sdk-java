@@ -25,7 +25,7 @@ public class Main {
             String subdomain = "subdomain";
             String userType = "user_admin"; // or "user_member"
             String clientUUID = "client-uuid";
-            List<String> serviceIds = Arrays.asList("10001", "10002"); // replace with actual service IDs
+            List<String> serviceIds = Arrays.asList("10001"); // replace with actual service IDs
             String sign = "sign"; // replace with actual sign
             String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
 

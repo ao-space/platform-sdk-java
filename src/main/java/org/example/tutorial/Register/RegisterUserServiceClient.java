@@ -1,6 +1,7 @@
 package org.example.tutorial.Register;
 
 import com.aliyuncs.transform.UnmarshallerContext;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.register.model.RegisterUserRequest;
 import org.example.register.model.RegisterUserResponse;
@@ -31,6 +32,9 @@ public class RegisterUserServiceClient {
 
         // Convert the RegisterUserRequest object to a JSON string
         ObjectMapper objectMapper = new ObjectMapper();
+        // Configure the ObjectMapper to only include non-null and non-empty properties during serialization
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
         String requestBody = objectMapper.writeValueAsString(request);
 
         HttpResponse<String> httpResponse = HttpClient.newHttpClient().send(

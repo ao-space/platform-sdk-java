@@ -1,10 +1,17 @@
 package org.example.tutorial.Authentication;
 
+import com.aliyuncs.RpcAcsRequest;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -30,7 +37,23 @@ public class BoxRegKeyServiceClient {
 
         // Convert the request object to a JSON string
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        // Configure the ObjectMapper to only include non-null and non-empty properties during serialization
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(ObtainBoxRegKeyRequest.class, new JsonSerializer<ObtainBoxRegKeyRequest>() {
+            @Override
+            public void serialize(ObtainBoxRegKeyRequest value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+                gen.writeStartObject();
+                gen.writeStringField("boxUUID", value.getBoxUUID());
+                gen.writeObjectField("serviceIds", value.getServiceIds());
+                gen.writeStringField("sign", value.getSign());
+                gen.writeEndObject();
+            }
+        });
+        objectMapper.registerModule(module);
         String requestBody = objectMapper.writeValueAsString(request);
+
+        System.out.println(requestBody);
 
         HttpResponse<String> httpResponse = HttpClient.newHttpClient().send(
                 HttpRequest.newBuilder()
