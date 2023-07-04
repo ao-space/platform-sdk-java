@@ -39,18 +39,18 @@ public class BoxRegKeyServiceClient {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         // Configure the ObjectMapper to only include non-null and non-empty properties during serialization
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(ObtainBoxRegKeyRequest.class, new JsonSerializer<ObtainBoxRegKeyRequest>() {
-            @Override
-            public void serialize(ObtainBoxRegKeyRequest value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                gen.writeStartObject();
-                gen.writeStringField("boxUUID", value.getBoxUUID());
-                gen.writeObjectField("serviceIds", value.getServiceIds());
-                gen.writeStringField("sign", value.getSign());
-                gen.writeEndObject();
-            }
-        });
-        objectMapper.registerModule(module);
+//        SimpleModule module = new SimpleModule();
+//        module.addSerializer(ObtainBoxRegKeyRequest.class, new JsonSerializer<ObtainBoxRegKeyRequest>() {
+//            @Override
+//            public void serialize(ObtainBoxRegKeyRequest value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+//                gen.writeStartObject();
+//                gen.writeStringField("boxUUID", value.getBoxUUID());
+//                gen.writeObjectField("serviceIds", value.getServiceIds());
+//                gen.writeStringField("sign", value.getSign());
+//                gen.writeEndObject();
+//            }
+//        });
+//        objectMapper.registerModule(module);
         String requestBody = objectMapper.writeValueAsString(request);
 
         System.out.println(requestBody);

@@ -2,11 +2,17 @@ package org.example.tutorial.Register;
 
 import com.aliyuncs.transform.UnmarshallerContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.register.model.RegisterUserRequest;
 import org.example.register.model.RegisterUserResponse;
 import org.example.register.transfer.RegisterUserResponseUnmarshaller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -34,6 +40,19 @@ public class RegisterUserServiceClient {
         ObjectMapper objectMapper = new ObjectMapper();
         // Configure the ObjectMapper to only include non-null and non-empty properties during serialization
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
+//        SimpleModule module = new SimpleModule();
+//        module.addSerializer(RegisterUserRequest.class, new JsonSerializer<RegisterUserRequest>() {
+//            @Override
+//            public void serialize(RegisterUserRequest value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+//                gen.writeStartObject();
+//                gen.writeStringField("boxUUID", value.getBoxUUID());
+//                gen.writeObjectField("serviceIds", value.getServiceIds());
+//                gen.writeStringField("sign", value.getSign());
+//                gen.writeEndObject();
+//            }
+//        });
+//        objectMapper.registerModule(module);
 
         String requestBody = objectMapper.writeValueAsString(request);
 
