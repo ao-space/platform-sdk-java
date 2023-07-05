@@ -53,7 +53,6 @@ public class BoxRegKeyServiceClient {
 //        objectMapper.registerModule(module);
         String requestBody = objectMapper.writeValueAsString(request);
 
-        System.out.println(requestBody);
 
         HttpResponse<String> httpResponse = HttpClient.newHttpClient().send(
                 HttpRequest.newBuilder()

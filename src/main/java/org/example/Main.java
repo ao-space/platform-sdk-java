@@ -33,6 +33,7 @@ public class Main {
             ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = boxRegKeyServiceClient.obtainBoxRegKey(boxUUID, serviceIds, sign, reqId);
             String boxRegKey = null;
 
+
             // Check if tokenResults are not empty
             if (!obtainBoxRegKeyResponse.getTokenResults().isEmpty()) {
                 boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
