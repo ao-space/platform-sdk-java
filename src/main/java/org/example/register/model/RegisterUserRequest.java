@@ -3,17 +3,13 @@ package org.example.register.model;
 import com.aliyuncs.RpcAcsRequest;
 import com.aliyuncs.http.MethodType;
 
-public class RegisterUserRequest extends RpcAcsRequest<RegisterUserResponse> {
+public class RegisterUserRequest {
     private String boxUUID;
     private String userId;
     private String subdomain;
     private String userType;
     private String clientUUID;
 
-    public RegisterUserRequest() {
-        super("AO-Space", "v2", "RegisterUser", "ao-space");
-        setMethod(MethodType.POST);
-    }
 
     public String getBoxUUID() {
         return this.boxUUID;
@@ -24,7 +20,7 @@ public class RegisterUserRequest extends RpcAcsRequest<RegisterUserResponse> {
             throw new IllegalArgumentException("Box UUID cannot be null or empty.");
         }
         this.boxUUID = boxUUID;
-        putBodyParameter("boxUUID", boxUUID);
+
     }
 
     public String getUserId() {
@@ -36,7 +32,7 @@ public class RegisterUserRequest extends RpcAcsRequest<RegisterUserResponse> {
             throw new IllegalArgumentException("User ID cannot be null or empty.");
         }
         this.userId = userId;
-        putBodyParameter("userId", userId);
+
     }
 
     public String getSubdomain() {
@@ -45,9 +41,6 @@ public class RegisterUserRequest extends RpcAcsRequest<RegisterUserResponse> {
 
     public void setSubdomain(String subdomain) {
         this.subdomain = subdomain;
-        if (subdomain != null) {
-            putBodyParameter("subdomain", subdomain);
-        }
     }
 
     public String getUserType() {
@@ -56,9 +49,6 @@ public class RegisterUserRequest extends RpcAcsRequest<RegisterUserResponse> {
 
     public void setUserType(String userType) {
         this.userType = userType;
-        if (userType != null) {
-            putBodyParameter("userType", userType);
-        }
     }
 
     public String getClientUUID() {
@@ -67,13 +57,6 @@ public class RegisterUserRequest extends RpcAcsRequest<RegisterUserResponse> {
 
     public void setClientUUID(String clientUUID) {
         this.clientUUID = clientUUID;
-        if (clientUUID != null) {
-            putBodyParameter("clientUUID", clientUUID);
-        }
     }
 
-    @Override
-    public Class<RegisterUserResponse> getResponseClass() {
-        return RegisterUserResponse.class;
-    }
 }

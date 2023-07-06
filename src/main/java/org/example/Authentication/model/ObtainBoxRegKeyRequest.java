@@ -5,7 +5,7 @@ import com.aliyuncs.http.MethodType;
 
 import java.util.List;
 
-public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyResponse> {
+public class ObtainBoxRegKeyRequest  {
 
     // Field for Box UUID
     private String boxUUID;
@@ -19,10 +19,7 @@ public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyRespons
     /**
      * Default constructor.
      */
-    public ObtainBoxRegKeyRequest() {
-        super("AO-Space", "v2", "ObtainBoxRegKey", "ao-space");
-        setMethod(MethodType.POST);
-    }
+
 
     public String getBoxUUID() {
         return this.boxUUID;
@@ -33,7 +30,7 @@ public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyRespons
             throw new IllegalArgumentException("Box UUID cannot be null or empty.");
         }
         this.boxUUID = boxUUID;
-        putBodyParameter("boxUUID", boxUUID);
+
     }
 
     public List<String> getServiceIds() {
@@ -45,7 +42,7 @@ public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyRespons
             throw new IllegalArgumentException("Service IDs cannot be null or empty.");
         }
         this.serviceIds = serviceIds;
-        putBodyParameter("serviceIds", serviceIds);
+
     }
 
     public String getSign() {
@@ -54,13 +51,6 @@ public class ObtainBoxRegKeyRequest extends RpcAcsRequest<ObtainBoxRegKeyRespons
 
     public void setSign(String sign) {
         this.sign = sign;
-        if(sign != null){
-            putBodyParameter("sign", sign);
-        }
     }
 
-    @Override
-    public Class<ObtainBoxRegKeyResponse> getResponseClass() {
-        return ObtainBoxRegKeyResponse.class;
-    }
 }
