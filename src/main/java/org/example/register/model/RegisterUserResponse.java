@@ -1,10 +1,6 @@
 package org.example.register.model;
 
-import com.aliyuncs.AcsResponse;
-import com.aliyuncs.transform.UnmarshallerContext;
-import org.example.register.transfer.RegisterUserResponseUnmarshaller;
-
-public class RegisterUserResponse extends AcsResponse {
+public class RegisterUserResponse {
     private String boxUUID;
     private String userId;
     private String userDomain;
@@ -53,8 +49,5 @@ public class RegisterUserResponse extends AcsResponse {
         this.clientUUID = clientUUID;
     }
 
-    @Override
-    public RegisterUserResponse getInstance(UnmarshallerContext context) {
-        return RegisterUserResponseUnmarshaller.unmarshall(this, context);
-    }
+
 }

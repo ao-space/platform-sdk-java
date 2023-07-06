@@ -2,13 +2,13 @@ package org.example.Authentication.model;
 
 import com.aliyuncs.AcsResponse;
 import com.aliyuncs.transform.UnmarshallerContext;
-import org.example.Authentication.transfer.ObtainBoxRegKeyResponseUnmarshaller;
+
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObtainBoxRegKeyResponse extends AcsResponse {
+public class ObtainBoxRegKeyResponse  {
 
     private String boxUUID;
     private List<TokenResult> tokenResults = new ArrayList<>();
@@ -33,10 +33,10 @@ public class ObtainBoxRegKeyResponse extends AcsResponse {
         }
     }
 
-    @Override
-    public ObtainBoxRegKeyResponse getInstance(UnmarshallerContext context) {
-        return	ObtainBoxRegKeyResponseUnmarshaller.unmarshall(this, context);
-    }
+//    @Override
+//    public ObtainBoxRegKeyResponse getInstance(UnmarshallerContext context) {
+//        return	ObtainBoxRegKeyResponseUnmarshaller.unmarshall(this, context);
+//    }
 
     // Inner class for TokenResult
     public static class TokenResult {

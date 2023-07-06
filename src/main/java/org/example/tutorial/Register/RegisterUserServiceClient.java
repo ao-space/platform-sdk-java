@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.register.model.RegisterUserRequest;
 import org.example.register.model.RegisterUserResponse;
-import org.example.register.transfer.RegisterUserResponseUnmarshaller;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -76,8 +76,6 @@ public class RegisterUserServiceClient {
         UnmarshallerContext context = objectMapper.readValue(httpResponse.body(), UnmarshallerContext.class);
 
         RegisterUserResponse response = new RegisterUserResponse();
-        RegisterUserResponseUnmarshaller unmarshaller = new RegisterUserResponseUnmarshaller();
-        unmarshaller.unmarshall(response, context);
 
         return response;
     }

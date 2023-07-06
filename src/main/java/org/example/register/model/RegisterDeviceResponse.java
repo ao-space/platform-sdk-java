@@ -1,10 +1,6 @@
 package org.example.register.model;
 
-import com.aliyuncs.AcsResponse;
-import com.aliyuncs.transform.UnmarshallerContext;
-import org.example.register.transfer.RegisterDeviceResponseUnmarshaller;
-
-public class RegisterDeviceResponse extends AcsResponse {
+public class RegisterDeviceResponse {
 
     private String boxUUID;
     private NetworkClient networkClient;
@@ -25,10 +21,7 @@ public class RegisterDeviceResponse extends AcsResponse {
         this.networkClient = networkClient;
     }
 
-    @Override
-    public RegisterDeviceResponse getInstance(UnmarshallerContext context) {
-        return	RegisterDeviceResponseUnmarshaller.unmarshall(this, context);
-    }
+
 
     public static class NetworkClient {
         private String clientId;
