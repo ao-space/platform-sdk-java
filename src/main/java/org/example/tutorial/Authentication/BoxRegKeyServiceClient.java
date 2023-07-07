@@ -1,6 +1,5 @@
 package org.example.tutorial.Authentication;
 
-import com.aliyuncs.RpcAcsRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

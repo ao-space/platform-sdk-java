@@ -31,10 +31,6 @@ public class ObtainBoxRegKeyResponse  {
         }
     }
 
-//    @Override
-//    public ObtainBoxRegKeyResponse getInstance(UnmarshallerContext context) {
-//        return	ObtainBoxRegKeyResponseUnmarshaller.unmarshall(this, context);
-//    }
 
     // Inner class for TokenResult
     public static class TokenResult {

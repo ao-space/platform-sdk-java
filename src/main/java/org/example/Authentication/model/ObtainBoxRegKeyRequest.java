@@ -14,10 +14,6 @@ public class ObtainBoxRegKeyRequest  {
     // Field for Sign
     private String sign;
 
-    /**
-     * Default constructor.
-     */
-
 
     public String getBoxUUID() {
         return this.boxUUID;
