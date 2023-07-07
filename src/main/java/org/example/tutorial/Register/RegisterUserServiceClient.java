@@ -1,6 +1,5 @@
 package org.example.tutorial.Register;
 
-import com.aliyuncs.transform.UnmarshallerContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -40,20 +39,6 @@ public class RegisterUserServiceClient {
         ObjectMapper objectMapper = new ObjectMapper();
         // Configure the ObjectMapper to only include non-null and non-empty properties during serialization
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
-//        SimpleModule module = new SimpleModule();
-//        module.addSerializer(RegisterUserRequest.class, new JsonSerializer<RegisterUserRequest>() {
-//            @Override
-//            public void serialize(RegisterUserRequest value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-//                gen.writeStartObject();
-//                gen.writeStringField("boxUUID", value.getBoxUUID());
-//                gen.writeObjectField("serviceIds", value.getServiceIds());
-//                gen.writeStringField("sign", value.getSign());
-//                gen.writeEndObject();
-//            }
-//        });
-//        objectMapper.registerModule(module);
-
         String requestBody = objectMapper.writeValueAsString(request);
 
         HttpResponse<String> httpResponse = HttpClient.newHttpClient().send(
@@ -71,9 +56,6 @@ public class RegisterUserServiceClient {
         if (httpResponse.statusCode() != 200) {
             throw new Exception("Error response from the server: " + httpResponse.body());
         }
-
-        // Convert the HTTP response body from a JSON string to an UnmarshallerContext object
-        UnmarshallerContext context = objectMapper.readValue(httpResponse.body(), UnmarshallerContext.class);
 
         RegisterUserResponse response = new RegisterUserResponse();
 

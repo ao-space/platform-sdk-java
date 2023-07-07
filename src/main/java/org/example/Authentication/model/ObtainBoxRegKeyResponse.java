@@ -30,8 +30,6 @@ public class ObtainBoxRegKeyResponse  {
             this.tokenResults = new ArrayList<>(tokenResults);
         }
     }
-
-
     // Inner class for TokenResult
     public static class TokenResult {
         private String serviceId;
