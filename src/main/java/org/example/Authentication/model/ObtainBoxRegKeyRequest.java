@@ -1,7 +1,5 @@
 package org.example.Authentication.model;
 
-import com.aliyuncs.RpcAcsRequest;
-import com.aliyuncs.http.MethodType;
 
 import java.util.List;
 

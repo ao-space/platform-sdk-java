@@ -1,7 +1,6 @@
 package org.example.register.model;
 
-import com.aliyuncs.RpcAcsRequest;
-import com.aliyuncs.http.MethodType;
+
 
 public class RegisterUserRequest {
     private String boxUUID;
