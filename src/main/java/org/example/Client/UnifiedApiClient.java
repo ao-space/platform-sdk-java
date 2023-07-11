@@ -7,6 +7,8 @@ import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 import org.example.register.model.RegisterDeviceRequest;
 import org.example.register.model.RegisterDeviceResponse;
+import org.example.register.model.RegisterUserRequest;
+import org.example.register.model.RegisterUserResponse;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -48,6 +50,22 @@ public class UnifiedApiClient {
         request.setBoxUUID(boxUUID);
 
         return executorService.submit(() -> sendRequest("/v2/platform/boxes", "POST", reqId, request, RegisterDeviceResponse.class, boxRegKey));
+    }
+    public Future<RegisterUserResponse> registerUser(String boxUUID, String userId, String subdomain, String userType, String clientUUID, String reqId, String boxRegKey) {
+        RegisterUserRequest request = new RegisterUserRequest();
+        request.setUserId(userId);
+        request.setSubdomain(subdomain);
+        request.setUserType(userType);
+        request.setClientUUID(clientUUID);
+
+        return executorService.submit(() -> sendRequest("/v2/platform/boxes/" + boxUUID + "/users", "POST", reqId, request, RegisterUserResponse.class, boxRegKey));
+    }
+
+    public Future<Void> deleteDevice(String boxUUID, String reqId, String boxRegKey) {
+        return executorService.submit(() -> {
+            sendRequest("/v2/platform/boxes/" + boxUUID, "DELETE", reqId, null, Void.class, boxRegKey);
+            return null;
+        });
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {

@@ -46,5 +46,4 @@ public class ObtainBoxRegKeyRequest  {
     public void setSign(String sign) {
         this.sign = sign;
     }
-
 }
