@@ -68,8 +68,15 @@ public class UnifiedApiClient {
         });
     }
 
+    public Future<Void> deleteUser(String boxUUID, String userId, String reqId, String boxRegKey) {
+        return executorService.submit(() -> {
+            sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId, "DELETE", reqId, null, Void.class, boxRegKey);
+            return null;
+        });
+    }
+
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {
-        String requestBody = objectMapper.writeValueAsString(requestObject);
+        String requestBody = requestObject == null ? "" : objectMapper.writeValueAsString(requestObject);
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(host + path))
@@ -91,8 +98,12 @@ public class UnifiedApiClient {
 
         HttpResponse<String> httpResponse = httpClient.send(httpRequestBuilder.build(), HttpResponse.BodyHandlers.ofString());
 
-        if (httpResponse.statusCode() != 200) {
+        if (httpResponse.statusCode() != 200 && httpResponse.statusCode() != 204) {
             throw new Exception("Error response from the server: " + httpResponse.body());
+        }
+
+        if (httpResponse.body().isEmpty()) {
+            return null;
         }
 
         return objectMapper.readValue(httpResponse.body(), responseClass);
