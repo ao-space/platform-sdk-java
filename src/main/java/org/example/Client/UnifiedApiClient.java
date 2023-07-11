@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
-import org.example.register.model.RegisterDeviceRequest;
-import org.example.register.model.RegisterDeviceResponse;
-import org.example.register.model.RegisterUserRequest;
-import org.example.register.model.RegisterUserResponse;
+import org.example.register.model.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -73,6 +70,14 @@ public class UnifiedApiClient {
             sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId, "DELETE", reqId, null, Void.class, boxRegKey);
             return null;
         });
+    }
+
+    public Future<RegisterClientResponse> registerClient(String boxUUID, String userId, String clientUUID, String clientType, String reqId, String boxRegKey) {
+        RegisterClientRequest request = new RegisterClientRequest();
+        request.setClientUUID(clientUUID);
+        request.setClientType(clientType);
+
+        return executorService.submit(() -> sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients", "POST", reqId, request, RegisterClientResponse.class, boxRegKey));
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {
