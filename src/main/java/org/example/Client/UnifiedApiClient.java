@@ -5,6 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
+import org.example.Migration.model.SpacePlatformMigrationRequest;
+import org.example.Migration.model.SpacePlatformMigrationResponse;
+import org.example.Migration.model.UserMigrationInfo;
+import org.example.domain.model.GenerateUserDomainNameRequest;
+import org.example.domain.model.GenerateUserDomainNameResponse;
+import org.example.domain.model.ModifyUserDomainNameRequest;
+import org.example.domain.model.ModifyUserDomainNameResponse;
 import org.example.register.model.*;
 
 import java.net.URI;
@@ -71,13 +78,39 @@ public class UnifiedApiClient {
             return null;
         });
     }
-
+    public Future<Void> deleteClient(String boxUUID, String userId, String clientUUID, String reqId, String boxRegKey) {
+        return executorService.submit(() -> {
+            sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients/" + clientUUID, "DELETE", reqId, null, Void.class, boxRegKey);
+            return null;
+        });
+    }
     public Future<RegisterClientResponse> registerClient(String boxUUID, String userId, String clientUUID, String clientType, String reqId, String boxRegKey) {
         RegisterClientRequest request = new RegisterClientRequest();
         request.setClientUUID(clientUUID);
         request.setClientType(clientType);
 
         return executorService.submit(() -> sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients", "POST", reqId, request, RegisterClientResponse.class, boxRegKey));
+    }
+    public Future<SpacePlatformMigrationResponse> migrateSpacePlatform(String boxUUID, String networkClientId, List<UserMigrationInfo> userInfos, String reqId, String boxRegKey) {
+        SpacePlatformMigrationRequest request = new SpacePlatformMigrationRequest();
+        request.setNetworkClientId(networkClientId);
+        request.setUserInfos(userInfos);
+
+        return executorService.submit(() -> sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, request, SpacePlatformMigrationResponse.class, boxRegKey));
+    }
+
+    public Future<GenerateUserDomainNameResponse> generateUserDomainName(String boxUUID, String effectiveTime, String reqId, String boxRegKey) {
+        GenerateUserDomainNameRequest request = new GenerateUserDomainNameRequest();
+        request.setEffectiveTime(effectiveTime);
+
+        return executorService.submit(() -> sendRequest("/v2/platform/boxes/" + boxUUID + "/subdomains", "POST", reqId, request, GenerateUserDomainNameResponse.class, boxRegKey));
+    }
+
+    public Future<ModifyUserDomainNameResponse> modifyUserDomainName(String boxUUID, String userId, String subdomain, String reqId, String boxRegKey) {
+        ModifyUserDomainNameRequest request = new ModifyUserDomainNameRequest();
+        request.setSubdomain(subdomain);
+
+        return executorService.submit(() -> sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "PUT", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey));
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {
@@ -93,6 +126,9 @@ public class UnifiedApiClient {
             httpRequestBuilder.header("Box-Reg-Key", boxRegKey);
         }
 
+        if (method.equals("PUT")) {
+            httpRequestBuilder.PUT(HttpRequest.BodyPublishers.ofString(requestBody));
+        }
         if (method.equals("POST")) {
             httpRequestBuilder.POST(HttpRequest.BodyPublishers.ofString(requestBody));
         } else if (method.equals("GET")) {
