@@ -1,4 +1,5 @@
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
+import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.register.model.RegisterClientResponse;
 import org.example.register.model.RegisterDeviceResponse;
 import org.example.register.model.RegisterUserResponse;
@@ -125,6 +126,44 @@ public class UnifiedApiClientTest {
             // Here you could assert more response data if necessary.
         } catch (InterruptedException | ExecutionException e) {
             System.out.println("Error occurred in registering user: " + e.getMessage());
+        } finally {
+            client.shutdown();
+        }
+    }
+    @Test
+    public void testGenerateUserDomainName() {
+        // Create an instance of UnifiedApiClient
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", "api-key", 10);
+        List<String> serviceIds = Arrays.asList("10001");
+
+        // Define required parameters
+        String effectiveTime = "7";
+
+        // Call obtainBoxRegKey to get boxRegKey
+        Future<ObtainBoxRegKeyResponse> futureObtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = "";
+        try {
+            ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = futureObtainBoxRegKeyResponse.get();  // Blocks until the API response is available
+            for (ObtainBoxRegKeyResponse.TokenResult tokenResult : obtainBoxRegKeyResponse.getTokenResults()) {
+                boxRegKey = tokenResult.getBoxRegKey();  // Fetching the boxRegKey
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println("Error occurred in obtaining box reg key: " + e.getMessage());
+        }
+
+        // Ensure we have a boxRegKey before we proceed to generate user domain name
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        // Generate user domain name with the obtained boxRegKey
+        Future<GenerateUserDomainNameResponse> future = client.generateUserDomainName(boxUUID, effectiveTime, reqId, boxRegKey);
+        try {
+            GenerateUserDomainNameResponse response = future.get();  // Blocks until the API response is available
+            System.out.println("Generated user domain for Box UUID: " + response.getBoxUUID());
+            System.out.println("Generated user domain Subdomain: " + response.getSubdomain());
+            System.out.println("Generated user domain ExpiresAt: " + response.getExpiresAt());
+            // Here you could assert more response data if necessary.
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println("Error occurred in generating user domain name: " + e.getMessage());
         } finally {
             client.shutdown();
         }
