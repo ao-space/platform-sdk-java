@@ -2,11 +2,6 @@ package org.example;
 
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 import org.example.Client.UnifiedApiClient;
-import org.example.register.model.RegisterUserResponse;
-import org.example.tutorial.Authentication.BoxRegKeyServiceClient;
-import org.example.tutorial.Register.RegisterDeviceServiceManager;
-import org.example.tutorial.Register.RegisterUserServiceClient;
-import org.example.tutorial.Register.RegisterUserServiceManager;
 
 import java.util.Arrays;
 import java.util.List;
