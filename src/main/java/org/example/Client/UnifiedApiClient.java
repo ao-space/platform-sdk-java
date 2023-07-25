@@ -109,6 +109,7 @@ public class UnifiedApiClient {
         return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomains", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey);
     }
 
+
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {
         String requestBody = requestObject == null ? "" : objectMapper.writeValueAsString(requestObject);
 
