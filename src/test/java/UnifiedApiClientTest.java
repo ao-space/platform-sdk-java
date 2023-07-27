@@ -1,5 +1,6 @@
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 import org.example.domain.model.GenerateUserDomainNameResponse;
+import org.example.domain.model.ModifyUserDomainNameResponse;
 import org.example.register.model.RegisterClientResponse;
 import org.example.register.model.RegisterDeviceResponse;
 import org.example.register.model.RegisterUserResponse;
@@ -142,5 +143,23 @@ public class UnifiedApiClientTest {
         client.deleteClient(boxUUID, userId, clientUUID, reqId, boxRegKey);
 
         LOGGER.info("Deleted client with Client UUID: {}", clientUUID);
+    }
+    @Test
+    public void testModifyUserDomainName() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        List<String> serviceIds = Arrays.asList("10001");
+        String userId = "1";
+        String subdomain = "newSubdomain";
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        ModifyUserDomainNameResponse response = client.modifyUserDomainName(boxUUID, userId, subdomain, reqId, boxRegKey);
+
+        LOGGER.info("Modified user domain name with Box UUID: {}", response.getBoxUUID());
+        LOGGER.info("Modified user domain name with User ID: {}", response.getUserId());
+        LOGGER.info("Modified user domain name with new Subdomain: {}", response.getSubdomain());
     }
 }

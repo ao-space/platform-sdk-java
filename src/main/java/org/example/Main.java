@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", "api-key");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
 
         List<String> serviceIds = Arrays.asList("10001");
         String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";

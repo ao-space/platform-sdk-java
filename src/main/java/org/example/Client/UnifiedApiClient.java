@@ -28,7 +28,6 @@ import java.util.concurrent.Future;
 public class UnifiedApiClient {
 
     private final String host;
-
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private static final Logger logger = LoggerFactory.getLogger(UnifiedApiClient.class);
