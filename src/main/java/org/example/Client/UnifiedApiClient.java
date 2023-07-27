@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.Authentication.model.ObtainBoxRegKeyRequest;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
-import org.example.Migration.model.SpacePlatformMigrationRequest;
-import org.example.Migration.model.SpacePlatformMigrationResponse;
-import org.example.Migration.model.UserMigrationInfo;
+import org.example.Migration.model.*;
 import org.example.domain.model.GenerateUserDomainNameRequest;
 import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.domain.model.ModifyUserDomainNameRequest;
@@ -92,6 +90,12 @@ public class UnifiedApiClient {
         request.setUserInfos(userInfos);
 
         return sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, request, SpacePlatformMigrationResponse.class, boxRegKey);
+    }
+    public SpacePlatformMigrationOutResponse migrateSpacePlatformOut(String boxUUID, List<UserDomainRouteInfo> userDomainRouteInfos, String reqId, String boxRegKey) throws Exception {
+        SpacePlatformMigrationOutRequest request = new SpacePlatformMigrationOutRequest();
+        request.setUserDomainRouteInfos(userDomainRouteInfos);
+
+        return sendRequest("/v2/platform/boxes/" + boxUUID + "/route", "POST", reqId, request, SpacePlatformMigrationOutResponse.class, boxRegKey);
     }
 
     public GenerateUserDomainNameResponse generateUserDomainName(String boxUUID, String effectiveTime, String reqId, String boxRegKey) throws Exception {
