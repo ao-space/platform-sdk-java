@@ -28,14 +28,14 @@ import java.util.concurrent.Future;
 public class UnifiedApiClient {
 
     private final String host;
-    private final String apiKey;
+
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private static final Logger logger = LoggerFactory.getLogger(UnifiedApiClient.class);
 
-    public UnifiedApiClient(String host, String apiKey) {
+    public UnifiedApiClient(String host) {
         this.host = host;
-        this.apiKey = apiKey;
+
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
                 .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
@@ -116,7 +116,6 @@ public class UnifiedApiClient {
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(host + path))
                 .header("Content-Type", "application/json")
-                .header("Api-Key", apiKey)
                 .header("Request-Id", reqId);
 
         if (boxRegKey != null) {

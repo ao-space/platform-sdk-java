@@ -22,7 +22,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testRegisterDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", "api-key");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
         List<String> serviceIds = Arrays.asList("10001");
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
@@ -38,7 +38,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testRegisterClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", "api-key");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
@@ -57,7 +57,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testRegisterUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", "api-key");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
         List<String> serviceIds = Arrays.asList("10001");
 
         String userId = "1";
@@ -81,7 +81,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testGenerateUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", "api-key");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
 
@@ -95,5 +95,52 @@ public class UnifiedApiClientTest {
         LOGGER.info("Generated user domain for Box UUID: {}", response.getBoxUUID());
         LOGGER.info("Generated user domain Subdomain: {}", response.getSubdomain());
         LOGGER.info("Generated user domain ExpiresAt: {}", response.getExpiresAt());
+    }
+    @Test
+    public void testDeleteDevice() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        List<String> serviceIds = Arrays.asList("10001");
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        client.deleteDevice(boxUUID, reqId, boxRegKey);
+
+        LOGGER.info("Deleted device with Box UUID: {}", boxUUID);
+    }
+
+    @Test
+    public void testDeleteUser() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        List<String> serviceIds = Arrays.asList("10001");
+        String userId = "1";
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        client.deleteUser(boxUUID, userId, reqId, boxRegKey);
+
+        LOGGER.info("Deleted user with User ID: {}", userId);
+    }
+
+    @Test
+    public void testDeleteClient() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        List<String> serviceIds = Arrays.asList("10001");
+        String userId = "1";
+        String clientUUID = "5d5af871790b4922bca935f08109a531";
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        client.deleteClient(boxUUID, userId, clientUUID, reqId, boxRegKey);
+
+        LOGGER.info("Deleted client with Client UUID: {}", clientUUID);
     }
 }
