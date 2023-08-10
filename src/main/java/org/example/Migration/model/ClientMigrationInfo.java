@@ -4,7 +4,11 @@ public class ClientMigrationInfo {
     private String clientUUID;
     private String clientType;
 
-    // getters and setters
+    public ClientMigrationInfo(String clientUUID, String clientType) {
+        this.clientUUID = clientUUID;
+        this.clientType = clientType;
+    }
+// getters and setters
 
     public String getClientUUID() {
         return clientUUID;

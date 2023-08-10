@@ -4,6 +4,11 @@ public class UserDomainRouteInfo {
     private String userId;
     private String userDomainRedirect;
 
+    public UserDomainRouteInfo(String userId, String userDomainRedirect) {
+        this.userId = userId;
+        this.userDomainRedirect = userDomainRedirect;
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -19,5 +24,4 @@ public class UserDomainRouteInfo {
     public void setUserDomainRedirect(String userDomainRedirect) {
         this.userDomainRedirect = userDomainRedirect;
     }
-// getters and setters
 }

@@ -8,6 +8,13 @@ public class UserMigrationInfo {
     private String userType;
     private List<ClientMigrationInfo> clientInfos;
 
+    public UserMigrationInfo(String userId, String userDomain, String userType, List<ClientMigrationInfo> clientInfos) {
+        this.userId = userId;
+        this.userDomain = userDomain;
+        this.userType = userType;
+        this.clientInfos = clientInfos;
+    }
+
     // getters and setters
 
     public String getUserId() {

@@ -1,5 +1,6 @@
 import lombok.extern.slf4j.Slf4j;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
+import org.example.Migration.model.*;
 import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.domain.model.ModifyUserDomainNameResponse;
 import org.example.register.model.RegisterClientResponse;
@@ -158,5 +159,46 @@ public class UnifiedApiClientTest {
         log.info("Modified user domain name with Box UUID: {}", response.getBoxUUID());
         log.info("Modified user domain name with User ID: {}", response.getUserId());
         log.info("Modified user domain name with new Subdomain: {}", response.getSubdomain());
+    }
+    @Test
+    public void testMigrateSpacePlatform() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
+        String networkClientId = "network-client-id";
+        List<String> serviceIds = Arrays.asList("10001");
+        List<UserMigrationInfo> userInfos = Arrays.asList(
+                new UserMigrationInfo("user1", "domain1", "administrator", Arrays.asList(new ClientMigrationInfo("clientUUID1", "client_bind"))),
+                new UserMigrationInfo("user2", "domain2", "member", Arrays.asList(new ClientMigrationInfo("clientUUID2", "client_auth")))
+        );
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        SpacePlatformMigrationResponse response = client.migrateSpacePlatform(boxUUID, networkClientId, userInfos, reqId, boxRegKey);
+
+        log.info("Migrated space platform with Box UUID: {}", response.getBoxUUID());
+        log.info("Migrated space platform with Network Client ID: {}", response.getNetworkClient().getClientId());
+        // Add more assertions and logging as needed
+    }
+    @Test
+    public void testMigrateSpacePlatformOut() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
+        List<String> serviceIds = Arrays.asList("10001");
+        List<UserDomainRouteInfo> userDomainRouteInfos = Arrays.asList(
+                new UserDomainRouteInfo("user1", "redirected-domain1"),
+                new UserDomainRouteInfo("user2", "redirected-domain2")
+        );
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        SpacePlatformMigrationOutResponse response = client.migrateSpacePlatformOut(boxUUID, userDomainRouteInfos, reqId, boxRegKey);
+
+        log.info("Migrated space platform out with Box UUID: {}", response.getBoxUUID());
+        log.info("Migrated space platform out with User Domain Route Infos: {}", response.getUserDomainRouteInfos());
+        // Add more assertions and logging as needed
     }
 }
