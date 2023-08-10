@@ -20,7 +20,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testRegisterDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
@@ -36,7 +36,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testRegisterClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
@@ -55,7 +55,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testRegisterUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
 
         String userId = "1";
@@ -79,7 +79,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testGenerateUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
 
@@ -96,7 +96,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testDeleteDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
 
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
@@ -111,7 +111,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
 
@@ -127,7 +127,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
@@ -143,7 +143,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testModifyUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space");
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String subdomain = "newSubdomain";

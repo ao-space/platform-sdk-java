@@ -33,24 +33,19 @@ public class UnifiedApiClient {
     private final String host;
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
-    private static final Logger logger = LoggerFactory.getLogger(UnifiedApiClient.class);
+    private static Logger logger = LoggerFactory.getLogger(UnifiedApiClient.class);
 
-    public UnifiedApiClient(String host, String logPath) {
+    public UnifiedApiClient(String host, Logger customLogger) {
         this.host = host;
 
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule())
                 .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
-        // Configure logger
-        if (logPath != null && !logPath.isEmpty()) {
-            try {
-                FileHandler fileHandler = new FileHandler(logPath, true);
-                fileHandler.setFormatter(new SimpleFormatter());
-                logger.addHandler(fileHandler);
-            } catch (IOException e) {
-                logger.error("Failed to configure log file handler", e);
-            }
+        if (customLogger != null) {
+            logger = customLogger;
+        } else {
+            logger = LoggerFactory.getLogger(UnifiedApiClient.class);
         }
     }
 
