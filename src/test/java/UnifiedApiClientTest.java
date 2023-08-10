@@ -1,3 +1,4 @@
+import lombok.extern.slf4j.Slf4j;
 import org.example.Authentication.model.ObtainBoxRegKeyResponse;
 import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.domain.model.ModifyUserDomainNameResponse;
@@ -7,17 +8,13 @@ import org.example.register.model.RegisterUserResponse;
 import org.junit.Test;
 import org.junit.Assert;
 import org.example.Client.UnifiedApiClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 
+@Slf4j
 public class UnifiedApiClientTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UnifiedApiClientTest.class);
     private static final String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";
     private static final String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
 
@@ -32,9 +29,9 @@ public class UnifiedApiClientTest {
 
         RegisterDeviceResponse response = client.registerDevice(boxUUID, reqId, boxRegKey);
 
-        LOGGER.info("Registered device with Box UUID: {}", response.getBoxUUID());
-        LOGGER.info("Registered device with clientId: {}", response.getNetworkClient().getClientId());
-        LOGGER.info("Registered device with secretKey: {}", response.getNetworkClient().getSecretKey());
+        log.info("Registered device with Box UUID: {}", response.getBoxUUID());
+        log.info("Registered device with clientId: {}", response.getNetworkClient().getClientId());
+        log.info("Registered device with secretKey: {}", response.getNetworkClient().getSecretKey());
     }
 
     @Test
@@ -52,8 +49,8 @@ public class UnifiedApiClientTest {
 
         RegisterClientResponse response = client.registerClient(boxUUID, userId, clientUUID, clientType, reqId, boxRegKey);
 
-        LOGGER.info("Registered client with Client UUID: {}", response.getClientUUID());
-        LOGGER.info("Registered client with Client Type: {}", response.getClientType());
+        log.info("Registered client with Client UUID: {}", response.getClientUUID());
+        log.info("Registered client with Client Type: {}", response.getClientType());
     }
 
     @Test
@@ -73,11 +70,11 @@ public class UnifiedApiClientTest {
 
         RegisterUserResponse response = client.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
 
-        LOGGER.info("Registered user with Box UUID: {}", response.getBoxUUID());
-        LOGGER.info("Registered user with User ID: {}", response.getUserId());
-        LOGGER.info("Registered user with User Domain: {}", response.getUserDomain());
-        LOGGER.info("Registered user with User Type: {}", response.getUserType());
-        LOGGER.info("Registered user with Client UUID: {}", response.getClientUUID());
+        log.info("Registered user with Box UUID: {}", response.getBoxUUID());
+        log.info("Registered user with User ID: {}", response.getUserId());
+        log.info("Registered user with User Domain: {}", response.getUserDomain());
+        log.info("Registered user with User Type: {}", response.getUserType());
+        log.info("Registered user with Client UUID: {}", response.getClientUUID());
     }
 
     @Test
@@ -93,9 +90,9 @@ public class UnifiedApiClientTest {
 
         GenerateUserDomainNameResponse response = client.generateUserDomainName(boxUUID, effectiveTime, reqId, boxRegKey);
 
-        LOGGER.info("Generated user domain for Box UUID: {}", response.getBoxUUID());
-        LOGGER.info("Generated user domain Subdomain: {}", response.getSubdomain());
-        LOGGER.info("Generated user domain ExpiresAt: {}", response.getExpiresAt());
+        log.info("Generated user domain for Box UUID: {}", response.getBoxUUID());
+        log.info("Generated user domain Subdomain: {}", response.getSubdomain());
+        log.info("Generated user domain ExpiresAt: {}", response.getExpiresAt());
     }
     @Test
     public void testDeleteDevice() throws Exception {
@@ -109,7 +106,7 @@ public class UnifiedApiClientTest {
 
         client.deleteDevice(boxUUID, reqId, boxRegKey);
 
-        LOGGER.info("Deleted device with Box UUID: {}", boxUUID);
+        log.info("Deleted device with Box UUID: {}", boxUUID);
     }
 
     @Test
@@ -125,7 +122,7 @@ public class UnifiedApiClientTest {
 
         client.deleteUser(boxUUID, userId, reqId, boxRegKey);
 
-        LOGGER.info("Deleted user with User ID: {}", userId);
+        log.info("Deleted user with User ID: {}", userId);
     }
 
     @Test
@@ -142,7 +139,7 @@ public class UnifiedApiClientTest {
 
         client.deleteClient(boxUUID, userId, clientUUID, reqId, boxRegKey);
 
-        LOGGER.info("Deleted client with Client UUID: {}", clientUUID);
+        log.info("Deleted client with Client UUID: {}", clientUUID);
     }
     @Test
     public void testModifyUserDomainName() throws Exception {
@@ -158,8 +155,8 @@ public class UnifiedApiClientTest {
 
         ModifyUserDomainNameResponse response = client.modifyUserDomainName(boxUUID, userId, subdomain, reqId, boxRegKey);
 
-        LOGGER.info("Modified user domain name with Box UUID: {}", response.getBoxUUID());
-        LOGGER.info("Modified user domain name with User ID: {}", response.getUserId());
-        LOGGER.info("Modified user domain name with new Subdomain: {}", response.getSubdomain());
+        log.info("Modified user domain name with Box UUID: {}", response.getBoxUUID());
+        log.info("Modified user domain name with User ID: {}", response.getUserId());
+        log.info("Modified user domain name with new Subdomain: {}", response.getSubdomain());
     }
 }
