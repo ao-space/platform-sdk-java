@@ -1,6 +1,6 @@
 import lombok.extern.slf4j.Slf4j;
-import org.example.Authentication.model.ObtainBoxRegKeyResponse;
-import org.example.Migration.model.*;
+import org.example.authentication.model.ObtainBoxRegKeyResponse;
+import org.example.migration.model.*;
 import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.domain.model.ModifyUserDomainNameResponse;
 import org.example.register.model.RegisterClientResponse;
@@ -8,7 +8,7 @@ import org.example.register.model.RegisterDeviceResponse;
 import org.example.register.model.RegisterUserResponse;
 import org.junit.Test;
 import org.junit.Assert;
-import org.example.Client.UnifiedApiClient;
+import org.example.client.UnifiedApiClient;
 
 import java.util.Arrays;
 import java.util.List;

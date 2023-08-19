@@ -1,4 +1,4 @@
-package org.example.Migration.model;
+package org.example.migration.model;
 
 import org.example.register.model.RegisterDeviceResponse;
 

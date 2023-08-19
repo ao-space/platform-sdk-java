@@ -1,12 +1,10 @@
 package org.example;
 
-import org.example.Authentication.model.ObtainBoxRegKeyResponse;
-import org.example.Client.UnifiedApiClient;
+import org.example.authentication.model.ObtainBoxRegKeyResponse;
+import org.example.client.UnifiedApiClient;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class Main {
     public static void main(String[] args) throws Exception {

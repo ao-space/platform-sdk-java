@@ -1,12 +1,12 @@
-package org.example.Client;
+package org.example.client;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.example.Authentication.model.ObtainBoxRegKeyRequest;
-import org.example.Authentication.model.ObtainBoxRegKeyResponse;
-import org.example.Migration.model.*;
+import org.example.authentication.model.ObtainBoxRegKeyRequest;
+import org.example.authentication.model.ObtainBoxRegKeyResponse;
+import org.example.migration.model.*;
 import org.example.domain.model.GenerateUserDomainNameRequest;
 import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.domain.model.ModifyUserDomainNameRequest;
@@ -15,7 +15,6 @@ import org.example.register.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -23,11 +22,6 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 
 public class UnifiedApiClient {
 

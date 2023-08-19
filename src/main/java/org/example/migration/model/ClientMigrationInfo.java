@@ -1,4 +1,4 @@
-package org.example.Migration.model;
+package org.example.migration.model;
 
 public class ClientMigrationInfo {
     private String clientUUID;

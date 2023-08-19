@@ -1,4 +1,4 @@
-package org.example.Authentication.model;
+package org.example.authentication.model;
 
 
 import java.util.List;

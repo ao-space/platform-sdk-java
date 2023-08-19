@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.example.Client.UnifiedApiClient" level="INFO">
+    <logger name="org.example.client.UnifiedApiClient" level="INFO">
         <appender-ref ref="FILE" />
     </logger>
 
