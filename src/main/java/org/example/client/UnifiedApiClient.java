@@ -21,7 +21,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class UnifiedApiClient {
 
@@ -29,6 +35,10 @@ public class UnifiedApiClient {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private static Logger logger = LoggerFactory.getLogger(UnifiedApiClient.class);
+
+    // Scheduled executor for periodic updates
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final Set<ApiInfo> availableApis = new HashSet<>();
 
     public UnifiedApiClient(String host, Logger customLogger) {
         this.host = host;
@@ -41,6 +51,33 @@ public class UnifiedApiClient {
             logger = customLogger;
         } else {
             logger = LoggerFactory.getLogger(UnifiedApiClient.class);
+        }
+        // Start the periodic update of available APIs
+        updateAvailableApis();
+        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 0, 1, TimeUnit.HOURS); // Update every hour
+    }
+    private void updateAvailableApis() {
+        try {
+            String path = "/v2/platform/ability";
+            HttpResponse<String> httpResponse = httpClient.send(HttpRequest.newBuilder()
+                    .uri(URI.create(host + path))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build(), HttpResponse.BodyHandlers.ofString());
+
+            if (httpResponse.statusCode() == 200) {
+                String responseBody = httpResponse.body();
+                JsonNode rootNode = objectMapper.readTree(responseBody);
+                JsonNode platformApisNode = rootNode.get("platformApis");
+                if (platformApisNode.isArray()) {
+                    availableApis.clear(); // Clear the existing APIs
+                    for (JsonNode apiNode : platformApisNode) {
+                        availableApis.add(new ApiInfo(apiNode.get("method").asText(), apiNode.get("briefUri").asText()));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Failed to update available APIs", e);
         }
     }
 
@@ -150,31 +187,8 @@ public class UnifiedApiClient {
 
         return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomains", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
     }
-    private boolean isApiAvailable(String method, String briefUri) throws Exception {
-        String path = "/v2/platform/ability";
-        HttpResponse<String> httpResponse = httpClient.send(HttpRequest.newBuilder()
-                .uri(URI.create(host + path))
-                .header("Content-Type", "application/json")
-                .GET()
-                .build(), HttpResponse.BodyHandlers.ofString());
-
-        if (httpResponse.statusCode() != 200) {
-            throw new Exception("Failed to fetch available APIs. Status code: " + httpResponse.statusCode());
-        }
-
-        String responseBody = httpResponse.body();
-        // Parse the response and check if the desired API is listed
-        JsonNode rootNode = objectMapper.readTree(responseBody);
-        JsonNode platformApisNode = rootNode.get("platformApis");
-        if (platformApisNode.isArray()) {
-            for (JsonNode apiNode : platformApisNode) {
-                if (method.equalsIgnoreCase(apiNode.get("method").asText()) &&
-                        briefUri.equalsIgnoreCase(apiNode.get("briefUri").asText())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    private boolean isApiAvailable(String method, String briefUri) {
+        return availableApis.contains(new ApiInfo(method, briefUri));
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey, String publicFunctionName) throws Exception {
@@ -215,5 +229,29 @@ public class UnifiedApiClient {
         }
 
         return objectMapper.readValue(httpResponse.body(), responseClass);
+    }
+    // Inner class to represent an API's method and brief URI
+    private static class ApiInfo {
+        private final String method;
+        private final String briefUri;
+
+        public ApiInfo(String method, String briefUri) {
+            this.method = method;
+            this.briefUri = briefUri;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ApiInfo apiInfo = (ApiInfo) o;
+            return Objects.equals(method, apiInfo.method) &&
+                    Objects.equals(briefUri, apiInfo.briefUri);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(method, briefUri);
+        }
     }
 }
