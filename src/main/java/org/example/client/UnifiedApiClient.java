@@ -207,8 +207,8 @@ public class UnifiedApiClient {
         HttpResponse<String> httpResponse = httpClient.send(httpRequestBuilder.build(), HttpResponse.BodyHandlers.ofString());
 
         String logTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        logger.info("Time: {}, Function: {}, Request: Method: {}, Path: {}, Request Id: {}, Request Body: {}, BoxRegKey: {}", logTime, publicFunctionName, method, path, reqId, requestBody, boxRegKey);
-        logger.info("Time: {}, Function: {}, Response: Status Code: {}, Response Body: {}", logTime, publicFunctionName, httpResponse.statusCode(), httpResponse.body());
+        logger.info("Time: {}, Request: Method: {}, Path: {}, Request Id: {}, Request Body: {}, BoxRegKey: {}", logTime, method, path, reqId, requestBody, boxRegKey);
+        logger.info("Time: {}, Response: Status Code: {}, Response Body: {}", logTime, httpResponse.statusCode(), httpResponse.body());
 
         if (httpResponse.statusCode() != 200) {
             throw new Exception("Request failed with status code: " + httpResponse.statusCode());
