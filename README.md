@@ -1,6 +1,6 @@
 [点击此处切换到中文版本](src/main/doc/README_CN.md)
 
-**UnifiedApiClient SDK Comprehensive Documentation**
+**Java SDK Comprehensive Documentation**
 
 ---
 
