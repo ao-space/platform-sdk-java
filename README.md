@@ -6,7 +6,7 @@
 
 ### Introduction
 
-The `UnifiedApiClient` SDK is a robust interface designed to facilitate seamless interactions between developers and the target platform. This documentation provides an in-depth guide on how to utilize the SDK effectively, ensuring that developers can harness its full potential.
+The Java SDK is a robust interface designed to facilitate seamless interactions between developers and the target platform. This documentation provides an in-depth guide on how to utilize the SDK effectively, ensuring that developers can harness its full potential.
 
 ---
 
@@ -89,7 +89,7 @@ Logs include:
 
 ### Conclusion
 
-The `UnifiedApiClient` SDK is a powerful tool for developers to interact with the target platform. By following this comprehensive guide, developers can ensure they're using the SDK to its fullest potential, leading to efficient and effective platform interactions.
+The Java SDK is a powerful tool for developers to interact with the target platform. By following this comprehensive guide, developers can ensure they're using the SDK to its fullest potential, leading to efficient and effective platform interactions.
 
 ---
 
@@ -97,4 +97,3 @@ The `UnifiedApiClient` SDK is a powerful tool for developers to interact with th
 
 ---
 
-[End of Documentation]
