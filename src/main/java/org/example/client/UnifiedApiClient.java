@@ -21,10 +21,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -54,17 +51,27 @@ public class UnifiedApiClient {
         }
         // Synchronously update the available APIs during initialization
         updateAvailableApis();
-        // Start the periodic update of available APIs
-        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 1, 1, TimeUnit.HOURS); // Update every hour
+//        // Start the periodic update of available APIs
+//        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 1, 1, TimeUnit.HOURS); // Update every hour
     }
     private void updateAvailableApis() {
         try {
             String path = "/v2/platform/ability";
-            HttpResponse<String> httpResponse = httpClient.send(HttpRequest.newBuilder()
+            String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";
+            String requestBody = objectMapper.writeValueAsString(Collections.singletonMap("boxUUID", boxUUID));
+
+            HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(host + path))
                     .header("Content-Type", "application/json")
-                    .GET()
-                    .build(), HttpResponse.BodyHandlers.ofString());
+                    .header("Box-Reg-Key", "brk_sjHm8GJxYn")
+                    .header("Request-Id", "e9993fc787d94b6c886cbaa340f9c0f4")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+            HttpResponse<String> httpResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            logger.info("HTTP Response Status: {}", httpResponse.statusCode());
+            logger.info("HTTP Response Body: {}", httpResponse.body());
 
             if (httpResponse.statusCode() == 200) {
                 String responseBody = httpResponse.body();
@@ -77,6 +84,8 @@ public class UnifiedApiClient {
                         availableApis.add(new ApiInfo(apiNode.get("method").asText().toUpperCase(), apiNode.get("briefUri").asText()));
                     }
                 }
+                // Logging the updated APIs
+                logger.info("Updated APIs: {}", availableApis);
             }
         } catch (Exception e) {
             logger.error("Failed to update available APIs", e);
@@ -84,6 +93,9 @@ public class UnifiedApiClient {
     }
 
     public ObtainBoxRegKeyResponse obtainBoxRegKey(String boxUUID, List<String> serviceIds, String sign, String reqId) throws Exception {
+        // Logging the state of availableApis right before the check
+        logger.info("Checking API availability. Current APIs: {}", availableApis);
+
         if (!isApiAvailable("POST", "auth/box_reg_keys")) {
             throw new Exception("API not available: POST auth/box_reg_keys");
         }
@@ -190,8 +202,8 @@ public class UnifiedApiClient {
         return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomains", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
     }
     private boolean isApiAvailable(String method, String briefUri) {
-        // Convert the method to uppercase before checking its availability
-        return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri));
+        // Convert both the method and briefUri to uppercase before checking its availability
+        return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri.toUpperCase()));
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey, String publicFunctionName) throws Exception {
@@ -245,6 +257,9 @@ public class UnifiedApiClient {
 
         @Override
         public boolean equals(Object o) {
+            // Logging inside the equals method
+            logger.info("Checking equality for ApiInfo: {}", o);
+
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             ApiInfo apiInfo = (ApiInfo) o;
@@ -254,6 +269,9 @@ public class UnifiedApiClient {
 
         @Override
         public int hashCode() {
+            // Logging inside the hashCode method
+            logger.info("Generating hashCode for ApiInfo: method={}, briefUri={}", method, briefUri);
+
             return Objects.hash(method, briefUri);
         }
     }
