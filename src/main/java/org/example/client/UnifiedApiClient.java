@@ -52,9 +52,10 @@ public class UnifiedApiClient {
         } else {
             logger = LoggerFactory.getLogger(UnifiedApiClient.class);
         }
-        // Start the periodic update of available APIs
+        // Synchronously update the available APIs during initialization
         updateAvailableApis();
-        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 0, 1, TimeUnit.HOURS); // Update every hour
+        // Start the periodic update of available APIs
+        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 1, 1, TimeUnit.HOURS); // Update every hour
     }
     private void updateAvailableApis() {
         try {
@@ -72,7 +73,8 @@ public class UnifiedApiClient {
                 if (platformApisNode.isArray()) {
                     availableApis.clear(); // Clear the existing APIs
                     for (JsonNode apiNode : platformApisNode) {
-                        availableApis.add(new ApiInfo(apiNode.get("method").asText(), apiNode.get("briefUri").asText()));
+                        // Convert the method to uppercase before adding to the set
+                        availableApis.add(new ApiInfo(apiNode.get("method").asText().toUpperCase(), apiNode.get("briefUri").asText()));
                     }
                 }
             }
@@ -188,7 +190,8 @@ public class UnifiedApiClient {
         return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomains", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
     }
     private boolean isApiAvailable(String method, String briefUri) {
-        return availableApis.contains(new ApiInfo(method, briefUri));
+        // Convert the method to uppercase before checking its availability
+        return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri));
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey, String publicFunctionName) throws Exception {
