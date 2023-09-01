@@ -51,10 +51,10 @@ public class UnifiedApiClient {
         }
         // Synchronously update the available APIs during initialization
         updateAvailableApis();
-//        // Start the periodic update of available APIs
-//        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 1, 1, TimeUnit.HOURS); // Update every hour
+        // Start the periodic update of available APIs
+        scheduler.scheduleAtFixedRate(this::updateAvailableApis, 1, 1, TimeUnit.HOURS); // Update every hour
     }
-    private void updateAvailableApis() {
+    public void updateAvailableApis() {
         try {
             String path = "/v2/platform/ability";
             String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";
@@ -118,8 +118,8 @@ public class UnifiedApiClient {
     }
 
     public RegisterUserResponse registerUser(String boxUUID, String userId, String subdomain, String userType, String clientUUID, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/users")) {
-            throw new Exception("API not available: POST boxes/users");
+        if (!isApiAvailable("POST", "boxes/{box_uuid}/users")) {
+            throw new Exception("API not available: POST boxes/{box_uuid}/users");
         }
         RegisterUserRequest request = new RegisterUserRequest();
         request.setUserId(userId);
@@ -131,29 +131,29 @@ public class UnifiedApiClient {
     }
 
     public void deleteDevice(String boxUUID, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("DELETE", "boxes")) {
-            throw new Exception("API not available: DELETE boxes");
+        if (!isApiAvailable("DELETE", "boxes/{box_uuid}")) {
+            throw new Exception("API not available: DELETE boxes/{box_uuid}");
         }
         sendRequest("/v2/platform/boxes/" + boxUUID, "DELETE", reqId, null, Void.class, boxRegKey,"deleteDevice");
     }
 
     public void deleteUser(String boxUUID, String userId, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("DELETE", "boxes/users")) {
-            throw new Exception("API not available: DELETE boxes/users");
+        if (!isApiAvailable("DELETE", "boxes/{box_uuid}/users/{user_id}")) {
+            throw new Exception("API not available: DELETE boxes/{box_uuid}/users/{user_id}");
         }
         sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId, "DELETE", reqId, null, Void.class, boxRegKey,"deleteUser");
     }
 
     public void deleteClient(String boxUUID, String userId, String clientUUID, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("DELETE", "boxes/users/clients")) {
-            throw new Exception("API not available: DELETE boxes/users/clients");
+        if (!isApiAvailable("DELETE", "boxes/{box_uuid}/users/{user_id}/clients/{client_uuid}")) {
+            throw new Exception("API not available: DELETE boxes/{box_uuid}/users/{user_id}/clients/{client_uuid}");
         }
         sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients/" + clientUUID, "DELETE", reqId, null, Void.class, boxRegKey,"deleteClient");
     }
 
     public RegisterClientResponse registerClient(String boxUUID, String userId, String clientUUID, String clientType, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/users/clients")) {
-            throw new Exception("API not available: POST boxes/users/clients");
+        if (!isApiAvailable("POST", "boxes/{box_uuid}/users/{user_id}/clients")) {
+            throw new Exception("API not available: POST boxes/{box_uuid}/users/{user_id}/clients");
         }
         RegisterClientRequest request = new RegisterClientRequest();
         request.setClientUUID(clientUUID);
@@ -163,8 +163,8 @@ public class UnifiedApiClient {
     }
 
     public SpacePlatformMigrationResponse migrateSpacePlatform(String boxUUID, String networkClientId, List<UserMigrationInfo> userInfos, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/migration")) {
-            throw new Exception("API not available: POST boxes/migration");
+        if (!isApiAvailable("POST", "boxes/{box_uuid}/migration")) {
+            throw new Exception("API not available: POST boxes/{box_uuid}/migration");
         }
         SpacePlatformMigrationRequest request = new SpacePlatformMigrationRequest();
         request.setNetworkClientId(networkClientId);
@@ -173,8 +173,8 @@ public class UnifiedApiClient {
         return sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, request, SpacePlatformMigrationResponse.class, boxRegKey,"migrateSpacePlatform");
     }
     public SpacePlatformMigrationOutResponse migrateSpacePlatformOut(String boxUUID, List<UserDomainRouteInfo> userDomainRouteInfos, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/route")) {
-            throw new Exception("API not available: POST boxes/route");
+        if (!isApiAvailable("POST", "boxes/{box_uuid}/route")) {
+            throw new Exception("API not available: POST boxes/{box_uuid}/route");
         }
         SpacePlatformMigrationOutRequest request = new SpacePlatformMigrationOutRequest();
         request.setUserDomainRouteInfos(userDomainRouteInfos);
@@ -183,8 +183,8 @@ public class UnifiedApiClient {
     }
 
     public GenerateUserDomainNameResponse generateUserDomainName(String boxUUID, String effectiveTime, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/subdomains")) {
-            throw new Exception("API not available: POST boxes/subdomains");
+        if (!isApiAvailable("POST", "boxes/{box_uuid}/subdomains")) {
+            throw new Exception("API not available: POST boxes/{box_uuid}/subdomains");
         }
         GenerateUserDomainNameRequest request = new GenerateUserDomainNameRequest();
         request.setEffectiveTime(effectiveTime);
@@ -193,16 +193,17 @@ public class UnifiedApiClient {
     }
 
     public ModifyUserDomainNameResponse modifyUserDomainName(String boxUUID, String userId, String subdomain, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/users/subdomains")) {
-            throw new Exception("API not available: POST boxes/users/subdomains");
+        if (!isApiAvailable("POST", "boxes/{box_uuid}/users/{user_id}/subdomain")) {
+            throw new Exception("API not available: POST boxes/{box_uuid}/users/{user_id}/subdomain");
         }
         ModifyUserDomainNameRequest request = new ModifyUserDomainNameRequest();
         request.setSubdomain(subdomain);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomains", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
+        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
     }
     private boolean isApiAvailable(String method, String briefUri) {
         // Convert both the method and briefUri to uppercase before checking its availability
+        logger.info("Available APIs: {}", availableApis);
         return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri));
     }
 

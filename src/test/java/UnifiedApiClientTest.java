@@ -69,6 +69,7 @@ public class UnifiedApiClientTest {
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
+        client.updateAvailableApis();
         RegisterUserResponse response = client.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
 
         log.info("Registered user with Box UUID: {}", response.getBoxUUID());
