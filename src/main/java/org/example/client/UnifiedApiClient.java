@@ -65,13 +65,13 @@ public class UnifiedApiClient {
                     .header("Content-Type", "application/json")
                     .header("Box-Reg-Key", "brk_sjHm8GJxYn")
                     .header("Request-Id", "e9993fc787d94b6c886cbaa340f9c0f4")
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .GET()  // Change this to GET
                     .build();
 
             HttpResponse<String> httpResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            logger.info("HTTP Response Status: {}", httpResponse.statusCode());
-            logger.info("HTTP Response Body: {}", httpResponse.body());
+//            logger.info("HTTP Response Status: {}", httpResponse.statusCode());
+//            logger.info("HTTP Response Body: {}", httpResponse.body());
 
             if (httpResponse.statusCode() == 200) {
                 String responseBody = httpResponse.body();
@@ -203,7 +203,7 @@ public class UnifiedApiClient {
     }
     private boolean isApiAvailable(String method, String briefUri) {
         // Convert both the method and briefUri to uppercase before checking its availability
-        return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri.toUpperCase()));
+        return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri));
     }
 
     private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey, String publicFunctionName) throws Exception {
@@ -270,7 +270,7 @@ public class UnifiedApiClient {
         @Override
         public int hashCode() {
             // Logging inside the hashCode method
-            logger.info("Generating hashCode for ApiInfo: method={}, briefUri={}", method, briefUri);
+            //logger.info("Generating hashCode for ApiInfo: method={}, briefUri={}", method, briefUri);
 
             return Objects.hash(method, briefUri);
         }
