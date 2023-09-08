@@ -57,21 +57,17 @@ public class UnifiedApiClient {
     public void updateAvailableApis() {
         try {
             String path = "/v2/platform/ability";
-            String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";
-            String requestBody = objectMapper.writeValueAsString(Collections.singletonMap("boxUUID", boxUUID));
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(host + path))
                     .header("Content-Type", "application/json")
-                    .header("Box-Reg-Key", "brk_sjHm8GJxYn")
                     .header("Request-Id", "e9993fc787d94b6c886cbaa340f9c0f4")
-                    .GET()  // Change this to GET
+                    .GET()
                     .build();
 
             HttpResponse<String> httpResponse = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-//            logger.info("HTTP Response Status: {}", httpResponse.statusCode());
-//            logger.info("HTTP Response Body: {}", httpResponse.body());
+            logger.info("HTTP Response Status: {}", httpResponse.statusCode());
+            logger.info("HTTP Response Body: {}", httpResponse.body());
 
             if (httpResponse.statusCode() == 200) {
                 String responseBody = httpResponse.body();
@@ -193,13 +189,13 @@ public class UnifiedApiClient {
     }
 
     public ModifyUserDomainNameResponse modifyUserDomainName(String boxUUID, String userId, String subdomain, String reqId, String boxRegKey) throws Exception {
-        if (!isApiAvailable("POST", "boxes/{box_uuid}/users/{user_id}/subdomain")) {
-            throw new Exception("API not available: POST boxes/{box_uuid}/users/{user_id}/subdomain");
+        if (!isApiAvailable("PUT", "boxes/{box_uuid}/users/{user_id}/subdomain")) {
+            throw new Exception("API not available: PUT boxes/{box_uuid}/users/{user_id}/subdomain");
         }
         ModifyUserDomainNameRequest request = new ModifyUserDomainNameRequest();
         request.setSubdomain(subdomain);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "POST", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
+        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "PUT", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
     }
     private boolean isApiAvailable(String method, String briefUri) {
         // Convert both the method and briefUri to uppercase before checking its availability

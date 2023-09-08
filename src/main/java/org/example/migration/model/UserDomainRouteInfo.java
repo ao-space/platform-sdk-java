@@ -8,7 +8,8 @@ public class UserDomainRouteInfo {
         this.userId = userId;
         this.userDomainRedirect = userDomainRedirect;
     }
-
+    public UserDomainRouteInfo() {
+    }
     public String getUserId() {
         return userId;
     }

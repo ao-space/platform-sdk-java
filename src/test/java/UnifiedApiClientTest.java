@@ -33,6 +33,7 @@ public class UnifiedApiClientTest {
         log.info("Registered device with Box UUID: {}", response.getBoxUUID());
         log.info("Registered device with clientId: {}", response.getNetworkClient().getClientId());
         log.info("Registered device with secretKey: {}", response.getNetworkClient().getSecretKey());
+        log.info("BoxRegKey: {}", boxRegKey);
     }
 
     @Test
@@ -81,7 +82,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testGenerateUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
 
@@ -145,10 +146,10 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testModifyUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
-        String subdomain = "newSubdomain";
+        String subdomain = "eqx441zw";
 
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
@@ -163,12 +164,12 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testMigrateSpacePlatform() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
-        String networkClientId = "network-client-id";
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com", null);
+        String networkClientId = "5d5af871790b4922bca935f08109a531";
         List<String> serviceIds = Arrays.asList("10001");
         List<UserMigrationInfo> userInfos = Arrays.asList(
-                new UserMigrationInfo("user1", "domain1", "administrator", Arrays.asList(new ClientMigrationInfo("clientUUID1", "client_bind"))),
-                new UserMigrationInfo("user2", "domain2", "member", Arrays.asList(new ClientMigrationInfo("clientUUID2", "client_auth")))
+                new UserMigrationInfo("1", "eqx441zw", "user_admin", Arrays.asList(new ClientMigrationInfo("5d5af871790b4922bca935f08109a531", "client_auth")))
+                // Add more users if needed
         );
 
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
@@ -184,11 +185,10 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testMigrateSpacePlatformOut() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com", null);
         List<String> serviceIds = Arrays.asList("10001");
         List<UserDomainRouteInfo> userDomainRouteInfos = Arrays.asList(
-                new UserDomainRouteInfo("user1", "redirected-domain1"),
-                new UserDomainRouteInfo("user2", "redirected-domain2")
+                new UserDomainRouteInfo("1", "imkpm39v.ao.space")
         );
 
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);

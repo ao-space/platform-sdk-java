@@ -8,6 +8,8 @@ public class ClientMigrationInfo {
         this.clientUUID = clientUUID;
         this.clientType = clientType;
     }
+    public ClientMigrationInfo() {
+    }
 // getters and setters
 
     public String getClientUUID() {

@@ -14,6 +14,8 @@ public class UserMigrationInfo {
         this.userType = userType;
         this.clientInfos = clientInfos;
     }
+    public UserMigrationInfo() {
+    }
 
     // getters and setters
 
