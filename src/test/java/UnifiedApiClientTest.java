@@ -99,7 +99,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testDeleteDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
         List<String> serviceIds = Arrays.asList("10001");
 
         ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
@@ -114,7 +114,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
 
@@ -130,7 +130,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
