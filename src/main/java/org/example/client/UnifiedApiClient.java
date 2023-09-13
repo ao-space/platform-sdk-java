@@ -88,7 +88,7 @@ public class UnifiedApiClient {
         }
     }
 
-    public ObtainBoxRegKeyResponse obtainBoxRegKey(String boxUUID, List<String> serviceIds, String sign, String reqId) throws Exception {
+    public ObtainBoxRegKeyResponse obtainBoxRegKey(String boxUUID, List<String> serviceIds, String reqId) throws Exception {
         // Logging the state of availableApis right before the check
         logger.info("Checking API availability. Current APIs: {}", availableApis);
 
@@ -98,7 +98,6 @@ public class UnifiedApiClient {
         ObtainBoxRegKeyRequest request = new ObtainBoxRegKeyRequest();
         request.setBoxUUID(boxUUID);
         request.setServiceIds(serviceIds);
-        request.setSign(sign);
 
         return sendRequest("/v2/platform/auth/box_reg_keys", "POST", reqId, request, ObtainBoxRegKeyResponse.class, null,"obtainBoxRegKey");
     }
@@ -236,10 +235,12 @@ public class UnifiedApiClient {
         logger.info("Time: {}, Request: Method: {}, Path: {}, Request Id: {}, Request Body: {}, BoxRegKey: {}", logTime, method, path, reqId, requestBody, boxRegKey);
         logger.info("Time: {}, Response: Status Code: {}, Response Body: {}", logTime, httpResponse.statusCode(), httpResponse.body());
 
-        if (httpResponse.statusCode() != 200) {
+        if (httpResponse.statusCode() != 200 && httpResponse.statusCode() != 204) {
             throw new Exception("Request failed with status code: " + httpResponse.statusCode());
         }
-
+        if (httpResponse.statusCode() == 204) {
+            return null; // Return null or some default value for 204 No Content
+        }
         return objectMapper.readValue(httpResponse.body(), responseClass);
     }
     // Inner class to represent an API's method and brief URI

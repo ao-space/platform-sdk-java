@@ -23,7 +23,7 @@ public class UnifiedApiClientTest {
     public void testRegisterDevice() throws Exception {
         UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -35,26 +35,6 @@ public class UnifiedApiClientTest {
         log.info("Registered device with secretKey: {}", response.getNetworkClient().getSecretKey());
         log.info("BoxRegKey: {}", boxRegKey);
     }
-
-    @Test
-    public void testRegisterClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
-        List<String> serviceIds = Arrays.asList("10001");
-        String userId = "1";
-        String clientUUID = "5d5af871790b4922bca935f08109a531";
-        String clientType = "client_auth";
-
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
-
-        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
-
-        RegisterClientResponse response = client.registerClient(boxUUID, userId, clientUUID, clientType, reqId, boxRegKey);
-
-        log.info("Registered client with Client UUID: {}", response.getClientUUID());
-        log.info("Registered client with Client Type: {}", response.getClientType());
-    }
-
     @Test
     public void testRegisterUser() throws Exception {
         UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
@@ -65,7 +45,7 @@ public class UnifiedApiClientTest {
         String userType = "user_admin";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -79,14 +59,33 @@ public class UnifiedApiClientTest {
         log.info("Registered user with User Type: {}", response.getUserType());
         log.info("Registered user with Client UUID: {}", response.getClientUUID());
     }
+    @Test
+    public void testRegisterClient() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        List<String> serviceIds = Arrays.asList("10001");
+        String userId = "1";
+        String clientUUID = "5d5af871790b4922bca935f08109a531";
+        String clientType = "client_auth";
+
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        RegisterClientResponse response = client.registerClient(boxUUID, userId, clientUUID, clientType, reqId, boxRegKey);
+
+        log.info("Registered client with Client UUID: {}", response.getClientUUID());
+        log.info("Registered client with Client Type: {}", response.getClientType());
+    }
+
 
     @Test
     public void testGenerateUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -99,10 +98,10 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testDeleteDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -114,11 +113,11 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -130,12 +129,12 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -146,12 +145,12 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testModifyUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com",null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String subdomain = "eqx441zw";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -164,7 +163,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testMigrateSpacePlatform() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com", null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
         String networkClientId = "5d5af871790b4922bca935f08109a531";
         List<String> serviceIds = Arrays.asList("10001");
         List<UserMigrationInfo> userInfos = Arrays.asList(
@@ -172,7 +171,7 @@ public class UnifiedApiClientTest {
                 // Add more users if needed
         );
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
@@ -185,13 +184,13 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testMigrateSpacePlatformOut() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://platform.muxixyz.com", null);
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
         List<String> serviceIds = Arrays.asList("10001");
         List<UserDomainRouteInfo> userDomainRouteInfos = Arrays.asList(
                 new UserDomainRouteInfo("1", "imkpm39v.ao.space")
         );
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, "sign", reqId);
+        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);

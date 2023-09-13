@@ -6,7 +6,7 @@
 
     <groupId>io.github.ren2003u</groupId>
     <artifactId>AO-space-SDK</artifactId>
-    <version>1.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>AO Space SDK</name>

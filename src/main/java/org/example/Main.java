@@ -15,7 +15,7 @@ public class Main {
         String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
         String sign = "sign";
 
-        ObtainBoxRegKeyResponse response = client.obtainBoxRegKey(boxUUID, serviceIds, sign, reqId);
+        ObtainBoxRegKeyResponse response = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
         // Blocks until the API response is available
         System.out.println("Box UUID: " + response.getBoxUUID());
         for (ObtainBoxRegKeyResponse.TokenResult tokenResult : response.getTokenResults()) {
