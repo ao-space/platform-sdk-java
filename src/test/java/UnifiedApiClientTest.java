@@ -1,5 +1,6 @@
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.ObtainBoxRegKeyResponse;
+import org.example.domain.errorHandle.ApiResponse;
 import org.example.migration.model.*;
 import org.example.domain.model.GenerateUserDomainNameResponse;
 import org.example.domain.model.ModifyUserDomainNameResponse;
@@ -9,6 +10,9 @@ import org.example.register.model.RegisterUserResponse;
 import org.junit.Test;
 import org.junit.Assert;
 import org.example.client.UnifiedApiClient;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,16 +27,27 @@ public class UnifiedApiClientTest {
     public void testRegisterDevice() throws Exception {
         UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        String boxRegKey = "";
+
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
-        RegisterDeviceResponse response = client.registerDevice(boxUUID, reqId, boxRegKey);
+        ApiResponse<RegisterDeviceResponse> response = client.registerDevice(boxUUID, reqId, boxRegKey);
 
-        log.info("Registered device with Box UUID: {}", response.getBoxUUID());
-        log.info("Registered device with clientId: {}", response.getNetworkClient().getClientId());
-        log.info("Registered device with secretKey: {}", response.getNetworkClient().getSecretKey());
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Registered device with Box UUID: {}", response.getData().getBoxUUID());
+            log.info("Registered device with clientId: {}", response.getData().getNetworkClient().getClientId());
+            log.info("Registered device with secretKey: {}", response.getData().getNetworkClient().getSecretKey());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
         log.info("BoxRegKey: {}", boxRegKey);
     }
     @Test
@@ -44,20 +59,29 @@ public class UnifiedApiClientTest {
         String subdomain = "";
         String userType = "user_admin";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
         client.updateAvailableApis();
-        RegisterUserResponse response = client.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
-
-        log.info("Registered user with Box UUID: {}", response.getBoxUUID());
-        log.info("Registered user with User ID: {}", response.getUserId());
-        log.info("Registered user with User Domain: {}", response.getUserDomain());
-        log.info("Registered user with User Type: {}", response.getUserType());
-        log.info("Registered user with Client UUID: {}", response.getClientUUID());
+        ApiResponse<RegisterUserResponse> response = client.registerUser(boxUUID, userId, subdomain, userType, clientUUID, reqId, boxRegKey);
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Registered user with Box UUID: {}", response.getData().getBoxUUID());
+            log.info("Registered user with User ID: {}", response.getData().getUserId());
+            log.info("Registered user with User Domain: {}", response.getData().getUserDomain());
+            log.info("Registered user with User Type: {}", response.getData().getUserType());
+            log.info("Registered user with Client UUID: {}", response.getData().getClientUUID());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
     }
     @Test
     public void testRegisterClient() throws Exception {
@@ -66,16 +90,26 @@ public class UnifiedApiClientTest {
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
         String clientType = "client_auth";
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
-        RegisterClientResponse response = client.registerClient(boxUUID, userId, clientUUID, clientType, reqId, boxRegKey);
+        ApiResponse<RegisterClientResponse> response = client.registerClient(boxUUID, userId, clientUUID, clientType, reqId, boxRegKey);
 
-        log.info("Registered client with Client UUID: {}", response.getClientUUID());
-        log.info("Registered client with Client Type: {}", response.getClientType());
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Registered client with Client UUID: {}", response.getData().getClientUUID());
+            log.info("Registered client with Client Type: {}", response.getData().getClientType());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
     }
 
 
@@ -84,25 +118,65 @@ public class UnifiedApiClientTest {
         UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
-        GenerateUserDomainNameResponse response = client.generateUserDomainName(boxUUID, effectiveTime, reqId, boxRegKey);
+        ApiResponse<GenerateUserDomainNameResponse> response = client.generateUserDomainName(boxUUID, effectiveTime, reqId, boxRegKey);
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Generated user domain for Box UUID: {}", response.getData().getBoxUUID());
+            log.info("Generated user domain Subdomain: {}", response.getData().getSubdomain());
+            log.info("Generated user domain ExpiresAt: {}", response.getData().getExpiresAt());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
+    }
+    @Test
+    public void testModifyUserDomainName() throws Exception {
+        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        List<String> serviceIds = Arrays.asList("10001");
+        String userId = "1";
+        String subdomain = "eqx441zw";
+        String boxRegKey = "";
 
-        log.info("Generated user domain for Box UUID: {}", response.getBoxUUID());
-        log.info("Generated user domain Subdomain: {}", response.getSubdomain());
-        log.info("Generated user domain ExpiresAt: {}", response.getExpiresAt());
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
+
+        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+
+        ApiResponse<ModifyUserDomainNameResponse> response = client.modifyUserDomainName(boxUUID, userId, subdomain, reqId, boxRegKey);
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Modified user domain name with User ID: {}", response.getData().getUserId());
+            log.info("Modified user domain name with new Subdomain: {}", response.getData().getSubdomain());
+            log.info("Modified user domain name with Recommends: {}", response.getData().getRecommends());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
+
     }
     @Test
     public void testDeleteDevice() throws Exception {
         UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
@@ -116,9 +190,12 @@ public class UnifiedApiClientTest {
         UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
@@ -133,34 +210,18 @@ public class UnifiedApiClientTest {
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
         client.deleteClient(boxUUID, userId, clientUUID, reqId, boxRegKey);
 
         log.info("Deleted client with Client UUID: {}", clientUUID);
-    }
-    @Test
-    public void testModifyUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
-        List<String> serviceIds = Arrays.asList("10001");
-        String userId = "1";
-        String subdomain = "eqx441zw";
-
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
-
-        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
-
-        ModifyUserDomainNameResponse response = client.modifyUserDomainName(boxUUID, userId, subdomain, reqId, boxRegKey);
-
-        log.info("Modified user domain name with Error: {}", response.getError());
-        log.info("Modified user domain name with User ID: {}", response.getUserId());
-        log.info("Modified user domain name with new Subdomain: {}", response.getSubdomain());
-        log.info("Modified user domain name with Recommends: {}", response.getRecommends());
     }
     @Test
     public void testMigrateSpacePlatform() throws Exception {
@@ -171,16 +232,25 @@ public class UnifiedApiClientTest {
                 new UserMigrationInfo("1", "eqx441zw", "user_admin", Arrays.asList(new ClientMigrationInfo("5d5af871790b4922bca935f08109a531", "client_auth")))
                 // Add more users if needed
         );
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
-        SpacePlatformMigrationResponse response = client.migrateSpacePlatform(boxUUID, networkClientId, userInfos, reqId, boxRegKey);
-
-        log.info("Migrated space platform with Box UUID: {}", response.getBoxUUID());
-        log.info("Migrated space platform with Network Client ID: {}", response.getNetworkClient().getClientId());
+        ApiResponse<SpacePlatformMigrationResponse> response = client.migrateSpacePlatform(boxUUID, networkClientId, userInfos, reqId, boxRegKey);
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Migrated space platform with Box UUID: {}", response.getData().getBoxUUID());
+            log.info("Migrated space platform with Network Client ID: {}", response.getData().getNetworkClient().getClientId());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
         // Add more assertions and logging as needed
     }
     @Test
@@ -190,16 +260,25 @@ public class UnifiedApiClientTest {
         List<UserDomainRouteInfo> userDomainRouteInfos = Arrays.asList(
                 new UserDomainRouteInfo("1", "imkpm39v.ao.space")
         );
+        String boxRegKey = "";
 
-        ObtainBoxRegKeyResponse obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
-        String boxRegKey = obtainBoxRegKeyResponse.getTokenResults().get(0).getBoxRegKey();
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        if (obtainBoxRegKeyResponse.getData() != null) {
+            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+        }
 
         Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
 
-        SpacePlatformMigrationOutResponse response = client.migrateSpacePlatformOut(boxUUID, userDomainRouteInfos, reqId, boxRegKey);
-
-        log.info("Migrated space platform out with Box UUID: {}", response.getBoxUUID());
-        log.info("Migrated space platform out with User Domain Route Infos: {}", response.getUserDomainRouteInfos());
+        ApiResponse<SpacePlatformMigrationOutResponse> response = client.migrateSpacePlatformOut(boxUUID, userDomainRouteInfos, reqId, boxRegKey);
+        if (response.getData() != null) {
+            // Handle the successful response
+            log.info("Migrated space platform out with Box UUID: {}", response.getData().getBoxUUID());
+            log.info("Migrated space platform out with User Domain Route Infos: {}", response.getData().getUserDomainRouteInfos());
+        }else if (response.getError() != null) {
+            // Handle or assert the error
+            log.info("Error code: {}",response.getError().getCode());
+            log.info("Error message: {}",response.getError().getMessage());
+        }
         // Add more assertions and logging as needed
     }
 }

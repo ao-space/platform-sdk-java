@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.authentication.model.ObtainBoxRegKeyRequest;
 import org.example.authentication.model.ObtainBoxRegKeyResponse;
+import org.example.domain.errorHandle.ApiResponse;
+import org.example.domain.errorHandle.ErrorClass;
 import org.example.migration.model.*;
 import org.example.domain.model.GenerateUserDomainNameRequest;
 import org.example.domain.model.GenerateUserDomainNameResponse;
@@ -88,7 +90,7 @@ public class UnifiedApiClient {
         }
     }
 
-    public ObtainBoxRegKeyResponse obtainBoxRegKey(String boxUUID, List<String> serviceIds, String reqId) throws Exception {
+    public <T> ApiResponse<T> obtainBoxRegKey(String boxUUID, List<String> serviceIds, String reqId) throws Exception {
         // Logging the state of availableApis right before the check
         logger.info("Checking API availability. Current APIs: {}", availableApis);
 
@@ -99,20 +101,20 @@ public class UnifiedApiClient {
         request.setBoxUUID(boxUUID);
         request.setServiceIds(serviceIds);
 
-        return sendRequest("/v2/platform/auth/box_reg_keys", "POST", reqId, request, ObtainBoxRegKeyResponse.class, null,"obtainBoxRegKey");
+        return (ApiResponse<T>) sendRequest("/v2/platform/auth/box_reg_keys", "POST", reqId, request, ObtainBoxRegKeyResponse.class, null);
     }
 
-    public RegisterDeviceResponse registerDevice(String boxUUID, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> registerDevice(String boxUUID, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes")) {
             throw new Exception("API not available: POST boxes");
         }
         RegisterDeviceRequest request = new RegisterDeviceRequest();
         request.setBoxUUID(boxUUID);
 
-        return sendRequest("/v2/platform/boxes", "POST", reqId, request, RegisterDeviceResponse.class, boxRegKey,"registerDevice");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes", "POST", reqId, request, RegisterDeviceResponse.class, boxRegKey);
     }
 
-    public RegisterUserResponse registerUser(String boxUUID, String userId, String subdomain, String userType, String clientUUID, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> registerUser(String boxUUID, String userId, String subdomain, String userType, String clientUUID, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/users")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/users");
         }
@@ -122,31 +124,31 @@ public class UnifiedApiClient {
         request.setUserType(userType);
         request.setClientUUID(clientUUID);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users", "POST", reqId, request, RegisterUserResponse.class, boxRegKey,"registerUser");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users", "POST", reqId, request, RegisterUserResponse.class, boxRegKey);
     }
 
     public void deleteDevice(String boxUUID, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("DELETE", "boxes/{box_uuid}")) {
             throw new Exception("API not available: DELETE boxes/{box_uuid}");
         }
-        sendRequest("/v2/platform/boxes/" + boxUUID, "DELETE", reqId, null, Void.class, boxRegKey,"deleteDevice");
+        sendRequest("/v2/platform/boxes/" + boxUUID, "DELETE", reqId, null, Void.class, boxRegKey);
     }
 
     public void deleteUser(String boxUUID, String userId, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("DELETE", "boxes/{box_uuid}/users/{user_id}")) {
             throw new Exception("API not available: DELETE boxes/{box_uuid}/users/{user_id}");
         }
-        sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId, "DELETE", reqId, null, Void.class, boxRegKey,"deleteUser");
+        sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId, "DELETE", reqId, null, Void.class, boxRegKey);
     }
 
     public void deleteClient(String boxUUID, String userId, String clientUUID, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("DELETE", "boxes/{box_uuid}/users/{user_id}/clients/{client_uuid}")) {
             throw new Exception("API not available: DELETE boxes/{box_uuid}/users/{user_id}/clients/{client_uuid}");
         }
-        sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients/" + clientUUID, "DELETE", reqId, null, Void.class, boxRegKey,"deleteClient");
+        sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients/" + clientUUID, "DELETE", reqId, null, Void.class, boxRegKey);
     }
 
-    public RegisterClientResponse registerClient(String boxUUID, String userId, String clientUUID, String clientType, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> registerClient(String boxUUID, String userId, String clientUUID, String clientType, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/users/{user_id}/clients")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/users/{user_id}/clients");
         }
@@ -154,10 +156,10 @@ public class UnifiedApiClient {
         request.setClientUUID(clientUUID);
         request.setClientType(clientType);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients", "POST", reqId, request, RegisterClientResponse.class, boxRegKey,"registerClient");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients", "POST", reqId, request, RegisterClientResponse.class, boxRegKey);
     }
 
-    public SpacePlatformMigrationResponse migrateSpacePlatform(String boxUUID, String networkClientId, List<UserMigrationInfo> userInfos, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> migrateSpacePlatform(String boxUUID, String networkClientId, List<UserMigrationInfo> userInfos, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/migration")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/migration");
         }
@@ -165,36 +167,36 @@ public class UnifiedApiClient {
         request.setNetworkClientId(networkClientId);
         request.setUserInfos(userInfos);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, request, SpacePlatformMigrationResponse.class, boxRegKey,"migrateSpacePlatform");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, request, SpacePlatformMigrationResponse.class, boxRegKey);
     }
-    public SpacePlatformMigrationOutResponse migrateSpacePlatformOut(String boxUUID, List<UserDomainRouteInfo> userDomainRouteInfos, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> migrateSpacePlatformOut(String boxUUID, List<UserDomainRouteInfo> userDomainRouteInfos, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/route")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/route");
         }
         SpacePlatformMigrationOutRequest request = new SpacePlatformMigrationOutRequest();
         request.setUserDomainRouteInfos(userDomainRouteInfos);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/route", "POST", reqId, request, SpacePlatformMigrationOutResponse.class, boxRegKey,"migrateSpacePlatformOut");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/route", "POST", reqId, request, SpacePlatformMigrationOutResponse.class, boxRegKey);
     }
 
-    public GenerateUserDomainNameResponse generateUserDomainName(String boxUUID, String effectiveTime, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> generateUserDomainName(String boxUUID, String effectiveTime, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/subdomains")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/subdomains");
         }
         GenerateUserDomainNameRequest request = new GenerateUserDomainNameRequest();
         request.setEffectiveTime(effectiveTime);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/subdomains", "POST", reqId, request, GenerateUserDomainNameResponse.class, boxRegKey,"generateUserDomainName");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/subdomains", "POST", reqId, request, GenerateUserDomainNameResponse.class, boxRegKey);
     }
 
-    public ModifyUserDomainNameResponse modifyUserDomainName(String boxUUID, String userId, String subdomain, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> modifyUserDomainName(String boxUUID, String userId, String subdomain, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("PUT", "boxes/{box_uuid}/users/{user_id}/subdomain")) {
             throw new Exception("API not available: PUT boxes/{box_uuid}/users/{user_id}/subdomain");
         }
         ModifyUserDomainNameRequest request = new ModifyUserDomainNameRequest();
         request.setSubdomain(subdomain);
 
-        return sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "PUT", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey,"modifyUserDomainName");
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "PUT", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey);
     }
     private boolean isApiAvailable(String method, String briefUri) {
         // Convert both the method and briefUri to uppercase before checking its availability
@@ -202,7 +204,7 @@ public class UnifiedApiClient {
         return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri));
     }
 
-    private <T> T sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey, String publicFunctionName) throws Exception {
+    private <T> ApiResponse<T> sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {
         String requestBody = requestObject == null ? "" : objectMapper.writeValueAsString(requestObject);
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
@@ -234,14 +236,22 @@ public class UnifiedApiClient {
         String logTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         logger.info("Time: {}, Request: Method: {}, Path: {}, Request Id: {}, Request Body: {}, BoxRegKey: {}", logTime, method, path, reqId, requestBody, boxRegKey);
         logger.info("Time: {}, Response: Status Code: {}, Response Body: {}", logTime, httpResponse.statusCode(), httpResponse.body());
-
-        if (httpResponse.statusCode() != 200 && httpResponse.statusCode() != 204) {
+        if(httpResponse.statusCode() == 400){
+            ErrorClass error = objectMapper.readValue(httpResponse.body(), ErrorClass.class);
+            ApiResponse<T> response = new ApiResponse<>();
+            response.setError(error);
+            return response;
+        }
+        if (httpResponse.statusCode() != 200 && httpResponse.statusCode() != 204 && httpResponse.statusCode() != 302){
             throw new Exception("Request failed with status code: " + httpResponse.statusCode());
         }
         if (httpResponse.statusCode() == 204) {
-            return null; // Return null or some default value for 204 No Content
+            return null;
         }
-        return objectMapper.readValue(httpResponse.body(), responseClass);
+        T responseData = objectMapper.readValue(httpResponse.body(), responseClass);
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setData(responseData);
+        return response;
     }
     // Inner class to represent an API's method and brief URI
     private static class ApiInfo {
