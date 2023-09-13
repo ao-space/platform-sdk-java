@@ -1,7 +1,8 @@
 package org.example.migration.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.List;
 public class SpacePlatformMigrationOutResponse {
     private String boxUUID;
     private List<UserDomainRouteInfo> userDomainRouteInfos;

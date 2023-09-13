@@ -157,9 +157,10 @@ public class UnifiedApiClientTest {
 
         ModifyUserDomainNameResponse response = client.modifyUserDomainName(boxUUID, userId, subdomain, reqId, boxRegKey);
 
-        log.info("Modified user domain name with Box UUID: {}", response.getBoxUUID());
+        log.info("Modified user domain name with Error: {}", response.getError());
         log.info("Modified user domain name with User ID: {}", response.getUserId());
         log.info("Modified user domain name with new Subdomain: {}", response.getSubdomain());
+        log.info("Modified user domain name with Recommends: {}", response.getRecommends());
     }
     @Test
     public void testMigrateSpacePlatform() throws Exception {

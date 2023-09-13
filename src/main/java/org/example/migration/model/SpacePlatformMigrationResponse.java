@@ -1,9 +1,10 @@
 package org.example.migration.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.example.register.model.RegisterDeviceResponse;
 
 import java.util.List;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SpacePlatformMigrationResponse {
     private String boxUUID;
     private RegisterDeviceResponse.NetworkClient networkClient;  // Assuming NetworkClient is already defined as per your response schema.

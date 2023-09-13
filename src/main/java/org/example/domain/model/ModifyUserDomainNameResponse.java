@@ -10,9 +10,16 @@ public class ModifyUserDomainNameResponse {
     private String subdomain;
     private String code;
     private String error;
-    private List<String> recommendations;
+    private List<String> recommends;
 
-    // Getters and setters with encapsulation
+    public List<String> getRecommends() {
+        return recommends;
+    }
+
+    public void setRecommends(List<String> recommends) {
+        this.recommends = recommends;
+    }
+// Getters and setters with encapsulation
 
     public boolean isSuccess() {
         return success;
@@ -62,13 +69,4 @@ public class ModifyUserDomainNameResponse {
         this.error = error;
     }
 
-    public List<String> getRecommendations() {
-        return recommendations;
-    }
-
-    public void setRecommendations(List<String> recommendations) {
-        this.recommendations = recommendations;
-    }
-
-    // Insert remaining getters and setters here similar to the example provided
 }
