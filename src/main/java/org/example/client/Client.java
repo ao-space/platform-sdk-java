@@ -28,18 +28,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class UnifiedApiClient {
+public class Client {
 
     private final String host;
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
-    private static Logger logger = LoggerFactory.getLogger(UnifiedApiClient.class);
+    private static Logger logger = LoggerFactory.getLogger(Client.class);
 
     // Scheduled executor for periodic updates
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final Set<ApiInfo> availableApis = new HashSet<>();
 
-    public UnifiedApiClient(String host, Logger customLogger) {
+    public Client(String host, Logger customLogger) {
         this.host = host;
 
         this.httpClient = HttpClient.newHttpClient();
@@ -49,7 +49,7 @@ public class UnifiedApiClient {
         if (customLogger != null) {
             logger = customLogger;
         } else {
-            logger = LoggerFactory.getLogger(UnifiedApiClient.class);
+            logger = LoggerFactory.getLogger(Client.class);
         }
         // Synchronously update the available APIs during initialization
         updateAvailableApis();

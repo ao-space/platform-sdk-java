@@ -1,11 +1,5 @@
 package org.example;
 
-import org.example.authentication.model.ObtainBoxRegKeyResponse;
-import org.example.client.UnifiedApiClient;
-
-import java.util.Arrays;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) throws Exception {
 //        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);

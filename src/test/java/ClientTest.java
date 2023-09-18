@@ -9,23 +9,20 @@ import org.example.register.model.RegisterDeviceResponse;
 import org.example.register.model.RegisterUserResponse;
 import org.junit.Test;
 import org.junit.Assert;
-import org.example.client.UnifiedApiClient;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.example.client.Client;
 
 import java.util.Arrays;
 import java.util.List;
 
 
 @Slf4j
-public class UnifiedApiClientTest {
+public class ClientTest {
     private static final String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";
     private static final String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
 
     @Test
     public void testRegisterDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String boxRegKey = "";
 
@@ -52,7 +49,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testRegisterUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
 
         String userId = "1";
@@ -85,7 +82,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testRegisterClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
@@ -115,7 +112,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testGenerateUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
         String boxRegKey = "";
@@ -141,7 +138,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testModifyUserDomainName() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String subdomain = "eqx441zw";
@@ -169,7 +166,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testDeleteDevice() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String boxRegKey = "";
 
@@ -187,7 +184,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteUser() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String boxRegKey = "";
@@ -206,7 +203,7 @@ public class UnifiedApiClientTest {
 
     @Test
     public void testDeleteClient() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space",null);
+        Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
@@ -225,7 +222,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testMigrateSpacePlatform() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
+        Client client = new Client("https://ao.space", null);
         String networkClientId = "5d5af871790b4922bca935f08109a531";
         List<String> serviceIds = Arrays.asList("10001");
         List<UserMigrationInfo> userInfos = Arrays.asList(
@@ -255,7 +252,7 @@ public class UnifiedApiClientTest {
     }
     @Test
     public void testMigrateSpacePlatformOut() throws Exception {
-        UnifiedApiClient client = new UnifiedApiClient("https://ao.space", null);
+        Client client = new Client("https://ao.space", null);
         List<String> serviceIds = Arrays.asList("10001");
         List<UserDomainRouteInfo> userDomainRouteInfos = Arrays.asList(
                 new UserDomainRouteInfo("1", "imkpm39v.ao.space")
