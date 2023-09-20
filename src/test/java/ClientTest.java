@@ -1,15 +1,15 @@
+import io.github.ren2003u.migration.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.example.authentication.model.ObtainBoxRegKeyResponse;
-import org.example.domain.errorHandle.ApiResponse;
-import org.example.migration.model.*;
-import org.example.domain.model.GenerateUserDomainNameResponse;
-import org.example.domain.model.ModifyUserDomainNameResponse;
-import org.example.register.model.RegisterClientResponse;
-import org.example.register.model.RegisterDeviceResponse;
-import org.example.register.model.RegisterUserResponse;
+import io.github.ren2003u.authentication.model.ObtainBoxRegKeyResponse;
+import io.github.ren2003u.domain.errorHandle.ApiResponse;
+import io.github.ren2003u.domain.model.GenerateUserDomainNameResponse;
+import io.github.ren2003u.domain.model.ModifyUserDomainNameResponse;
+import io.github.ren2003u.register.model.RegisterClientResponse;
+import io.github.ren2003u.register.model.RegisterDeviceResponse;
+import io.github.ren2003u.register.model.RegisterUserResponse;
 import org.junit.Test;
 import org.junit.Assert;
-import org.example.client.Client;
+import io.github.ren2003u.client.Client;
 
 import java.util.Arrays;
 import java.util.List;
