@@ -10,12 +10,10 @@ import io.github.ren2003u.register.model.*;
 import io.github.ren2003u.authentication.model.ObtainBoxRegKeyResponse;
 import io.github.ren2003u.domain.errorHandle.ApiResponse;
 import io.github.ren2003u.domain.errorHandle.ErrorClass;
-import org.example.migration.model.*;
 import io.github.ren2003u.domain.model.GenerateUserDomainNameRequest;
 import io.github.ren2003u.domain.model.GenerateUserDomainNameResponse;
 import io.github.ren2003u.domain.model.ModifyUserDomainNameRequest;
 import io.github.ren2003u.domain.model.ModifyUserDomainNameResponse;
-import org.example.register.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
