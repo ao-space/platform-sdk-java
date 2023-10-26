@@ -25,8 +25,8 @@ public class ClientTest {
         Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -57,8 +57,8 @@ public class ClientTest {
         String userType = "user_admin";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -88,8 +88,8 @@ public class ClientTest {
         String clientUUID = "5d5af871790b4922bca935f08109a531";
         String clientType = "client_auth";
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -116,8 +116,8 @@ public class ClientTest {
         List<String> serviceIds = Arrays.asList("10001");
         String effectiveTime = "7";
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -143,8 +143,8 @@ public class ClientTest {
         String userId = "1";
         String subdomain = "eqx441zw";
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -169,8 +169,8 @@ public class ClientTest {
         Client client = new Client("https://ao.space",null);
         List<String> serviceIds = Arrays.asList("10001");
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -188,8 +188,8 @@ public class ClientTest {
         List<String> serviceIds = Arrays.asList("10001");
         String userId = "1";
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -208,8 +208,8 @@ public class ClientTest {
         String userId = "1";
         String clientUUID = "5d5af871790b4922bca935f08109a531";
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -230,8 +230,8 @@ public class ClientTest {
                 // Add more users if needed
         );
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }
@@ -258,8 +258,8 @@ public class ClientTest {
                 new UserDomainRouteInfo("1", "imkpm39v.ao.space")
         );
         String boxRegKey = "";
-
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId);
+        String sign = "sign";
+        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
         if (obtainBoxRegKeyResponse.getData() != null) {
             boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
         }

@@ -90,7 +90,7 @@ public class Client {
         }
     }
 
-    public <T> ApiResponse<T> obtainBoxRegKey(String boxUUID, List<String> serviceIds, String reqId) throws Exception {
+    public <T> ApiResponse<T> obtainBoxRegKey(String boxUUID, List<String> serviceIds, String reqId, String sign) throws Exception {
         // Logging the state of availableApis right before the check
         logger.info("Checking API availability. Current APIs: {}", availableApis);
 
@@ -100,6 +100,7 @@ public class Client {
         ObtainBoxRegKeyRequest request = new ObtainBoxRegKeyRequest();
         request.setBoxUUID(boxUUID);
         request.setServiceIds(serviceIds);
+        request.setSign(sign);
 
         return (ApiResponse<T>) sendRequest("/v2/platform/auth/box_reg_keys", "POST", reqId, request, ObtainBoxRegKeyResponse.class, null);
     }
