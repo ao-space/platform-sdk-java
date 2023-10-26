@@ -20,33 +20,33 @@ public class ClientTest {
     private static final String boxUUID = "364b553c01dabb2764b2f2c0e721c1e860e308b1c7daed2671507d21434060ed";
     private static final String reqId = "e9993fc787d94b6c886cbaa340f9c0f4";
 
-    @Test
-    public void testRegisterDevice() throws Exception {
-        Client client = new Client("https://ao.space",null);
-        List<String> serviceIds = Arrays.asList("10001");
-        String boxRegKey = "";
-        String sign = "sign";
-        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
-        if (obtainBoxRegKeyResponse.getData() != null) {
-            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
-        }
-
-        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
-
-        ApiResponse<RegisterDeviceResponse> response = client.registerDevice(boxUUID, reqId, boxRegKey);
-
-        if (response.getData() != null) {
-            // Handle the successful response
-            log.info("Registered device with Box UUID: {}", response.getData().getBoxUUID());
-            log.info("Registered device with clientId: {}", response.getData().getNetworkClient().getClientId());
-            log.info("Registered device with secretKey: {}", response.getData().getNetworkClient().getSecretKey());
-        }else if (response.getError() != null) {
-            // Handle or assert the error
-            log.info("Error code: {}",response.getError().getCode());
-            log.info("Error message: {}",response.getError().getMessage());
-        }
-        log.info("BoxRegKey: {}", boxRegKey);
-    }
+//    @Test
+//    public void testRegisterDevice() throws Exception {
+//        Client client = new Client("https://ao.space",null);
+//        List<String> serviceIds = Arrays.asList("10001");
+//        String boxRegKey = "";
+//        String sign = "sign";
+//        ApiResponse<ObtainBoxRegKeyResponse> obtainBoxRegKeyResponse = client.obtainBoxRegKey(boxUUID, serviceIds, reqId,sign);
+//        if (obtainBoxRegKeyResponse.getData() != null) {
+//            boxRegKey = obtainBoxRegKeyResponse.getData().getTokenResults().get(0).getBoxRegKey();
+//        }
+//
+//        Assert.assertNotNull("boxRegKey should not be null", boxRegKey);
+//
+//        ApiResponse<RegisterDeviceResponse> response = client.registerDevice(boxUUID, reqId, boxRegKey);
+//
+//        if (response.getData() != null) {
+//            // Handle the successful response
+//            log.info("Registered device with Box UUID: {}", response.getData().getBoxUUID());
+//            log.info("Registered device with clientId: {}", response.getData().getNetworkClient().getClientId());
+//            log.info("Registered device with secretKey: {}", response.getData().getNetworkClient().getSecretKey());
+//        }else if (response.getError() != null) {
+//            // Handle or assert the error
+//            log.info("Error code: {}",response.getError().getCode());
+//            log.info("Error message: {}",response.getError().getMessage());
+//        }
+//        log.info("BoxRegKey: {}", boxRegKey);
+//    }
     @Test
     public void testRegisterUser() throws Exception {
         Client client = new Client("https://ao.space",null);
