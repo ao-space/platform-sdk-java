@@ -90,42 +90,36 @@ public class Client {
         }
     }
 
-    public <T> ApiResponse<T> obtainBoxRegKey(String boxUUID, List<String> serviceIds, String reqId, String sign) throws Exception {
+    public <T> ApiResponse<T> obtainBoxRegKey(String jsonRequest, String reqId) throws Exception {
         // Logging the state of availableApis right before the check
         logger.info("Checking API availability. Current APIs: {}", availableApis);
 
         if (!isApiAvailable("POST", "auth/box_reg_keys")) {
             throw new Exception("API not available: POST auth/box_reg_keys");
         }
-        ObtainBoxRegKeyRequest request = new ObtainBoxRegKeyRequest();
-        request.setBoxUUID(boxUUID);
-        request.setServiceIds(serviceIds);
-        request.setSign(sign);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/auth/box_reg_keys", "POST", reqId, request, ObtainBoxRegKeyResponse.class, null);
+        return (ApiResponse<T>) sendRequest("/v2/platform/auth/box_reg_keys", "POST", reqId, jsonRequest, ObtainBoxRegKeyResponse.class, null);
     }
 
-    public <T> ApiResponse<T> registerDevice(String boxUUID, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> registerDevice(String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes")) {
             throw new Exception("API not available: POST boxes");
         }
-        RegisterDeviceRequest request = new RegisterDeviceRequest();
-        request.setBoxUUID(boxUUID);
+//        RegisterDeviceRequest request = new RegisterDeviceRequest();
+//        request.setBoxUUID(boxUUID);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes", "POST", reqId, request, RegisterDeviceResponse.class, boxRegKey);
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes", "POST", reqId, jsonRequest, RegisterDeviceResponse.class, boxRegKey);
     }
 
-    public <T> ApiResponse<T> registerUser(String boxUUID, String userId, String subdomain, String userType, String clientUUID, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> registerUser(String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/users")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/users");
         }
-        RegisterUserRequest request = new RegisterUserRequest();
-        request.setUserId(userId);
-        request.setSubdomain(subdomain);
-        request.setUserType(userType);
-        request.setClientUUID(clientUUID);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users", "POST", reqId, request, RegisterUserResponse.class, boxRegKey);
+        // Deserialize jsonRequest to RegisterUserRequest object
+        RegisterUserRequest request = new ObjectMapper().readValue(jsonRequest, RegisterUserRequest.class);
+
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + request.getBoxUUID() + "/users", "POST", reqId, jsonRequest, RegisterUserResponse.class, boxRegKey);
     }
 
     public void deleteDevice(String boxUUID, String reqId, String boxRegKey) throws Exception {
@@ -149,55 +143,55 @@ public class Client {
         sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients/" + clientUUID, "DELETE", reqId, null, Void.class, boxRegKey);
     }
 
-    public <T> ApiResponse<T> registerClient(String boxUUID, String userId, String clientUUID, String clientType, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> registerClient(String boxUUID, String userId, String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/users/{user_id}/clients")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/users/{user_id}/clients");
         }
-        RegisterClientRequest request = new RegisterClientRequest();
-        request.setClientUUID(clientUUID);
-        request.setClientType(clientType);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients", "POST", reqId, request, RegisterClientResponse.class, boxRegKey);
+        // Deserialize jsonRequest to RegisterClientRequest object
+        RegisterClientRequest request = new ObjectMapper().readValue(jsonRequest, RegisterClientRequest.class);
+
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/clients", "POST", reqId, jsonRequest, RegisterClientResponse.class, boxRegKey);
     }
 
-    public <T> ApiResponse<T> migrateSpacePlatform(String boxUUID, String networkClientId, List<UserMigrationInfo> userInfos, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> migrateSpacePlatform(String boxUUID, String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/migration")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/migration");
         }
-        SpacePlatformMigrationRequest request = new SpacePlatformMigrationRequest();
-        request.setNetworkClientId(networkClientId);
-        request.setUserInfos(userInfos);
+//        SpacePlatformMigrationRequest request = new SpacePlatformMigrationRequest();
+//        request.setNetworkClientId(networkClientId);
+//        request.setUserInfos(userInfos);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, request, SpacePlatformMigrationResponse.class, boxRegKey);
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/migration", "POST", reqId, jsonRequest, SpacePlatformMigrationResponse.class, boxRegKey);
     }
-    public <T> ApiResponse<T> migrateSpacePlatformOut(String boxUUID, List<UserDomainRouteInfo> userDomainRouteInfos, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> migrateSpacePlatformOut(String boxUUID, String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/route")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/route");
         }
-        SpacePlatformMigrationOutRequest request = new SpacePlatformMigrationOutRequest();
-        request.setUserDomainRouteInfos(userDomainRouteInfos);
+//        SpacePlatformMigrationOutRequest request = new SpacePlatformMigrationOutRequest();
+//        request.setUserDomainRouteInfos(userDomainRouteInfos);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/route", "POST", reqId, request, SpacePlatformMigrationOutResponse.class, boxRegKey);
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/route", "POST", reqId, jsonRequest, SpacePlatformMigrationOutResponse.class, boxRegKey);
     }
 
-    public <T> ApiResponse<T> generateUserDomainName(String boxUUID, String effectiveTime, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> generateUserDomainName(String boxUUID, String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("POST", "boxes/{box_uuid}/subdomains")) {
             throw new Exception("API not available: POST boxes/{box_uuid}/subdomains");
         }
-        GenerateUserDomainNameRequest request = new GenerateUserDomainNameRequest();
-        request.setEffectiveTime(effectiveTime);
+//        GenerateUserDomainNameRequest request = new GenerateUserDomainNameRequest();
+//        request.setEffectiveTime(effectiveTime);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/subdomains", "POST", reqId, request, GenerateUserDomainNameResponse.class, boxRegKey);
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/subdomains", "POST", reqId, jsonRequest, GenerateUserDomainNameResponse.class, boxRegKey);
     }
 
-    public <T> ApiResponse<T> modifyUserDomainName(String boxUUID, String userId, String subdomain, String reqId, String boxRegKey) throws Exception {
+    public <T> ApiResponse<T> modifyUserDomainName(String boxUUID, String userId, String jsonRequest, String reqId, String boxRegKey) throws Exception {
         if (!isApiAvailable("PUT", "boxes/{box_uuid}/users/{user_id}/subdomain")) {
             throw new Exception("API not available: PUT boxes/{box_uuid}/users/{user_id}/subdomain");
         }
-        ModifyUserDomainNameRequest request = new ModifyUserDomainNameRequest();
-        request.setSubdomain(subdomain);
+//        ModifyUserDomainNameRequest request = new ModifyUserDomainNameRequest();
+//        request.setSubdomain(subdomain);
 
-        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "PUT", reqId, request, ModifyUserDomainNameResponse.class, boxRegKey);
+        return (ApiResponse<T>) sendRequest("/v2/platform/boxes/" + boxUUID + "/users/" + userId + "/subdomain", "PUT", reqId, jsonRequest, ModifyUserDomainNameResponse.class, boxRegKey);
     }
     private boolean isApiAvailable(String method, String briefUri) {
         // Convert both the method and briefUri to uppercase before checking its availability
@@ -205,8 +199,7 @@ public class Client {
         return availableApis.contains(new ApiInfo(method.toUpperCase(), briefUri));
     }
 
-    private <T> ApiResponse<T> sendRequest(String path, String method, String reqId, Object requestObject, Class<T> responseClass, String boxRegKey) throws Exception {
-        String requestBody = requestObject == null ? "" : objectMapper.writeValueAsString(requestObject);
+    private <T> ApiResponse<T> sendRequest(String path, String method, String reqId, String requestBody, Class<T> responseClass, String boxRegKey) throws Exception {
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(host + path))
